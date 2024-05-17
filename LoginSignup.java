@@ -53,7 +53,7 @@ public class LoginSignup {
     public void check(String userName,String userId,String userPassword , String address) throws IOException {
         while(isExist(userName,userId,address)){
             try{
-                throw new UserAlreadyExistException("The account has already exist!!");
+                throw new UserAlreadyExistException();
             }catch(UserAlreadyExistException e){
                 System.out.println(e.getMessage());
                 userName=signUpUserName();
@@ -224,21 +224,6 @@ public class LoginSignup {
     }
 
 }
-class InvalidUserActionException extends RuntimeException{
-    public InvalidUserActionException(){
-        super();
-    }
-    public InvalidUserActionException(String message){
-        super(message);
-    }
-}
-class UserAlreadyExistException extends RuntimeException{
-    public UserAlreadyExistException(){
-        super();
-    }
-    public UserAlreadyExistException(String message){
-        super(message);
-    }
-}
+
 
 
