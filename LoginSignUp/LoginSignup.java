@@ -11,30 +11,64 @@ import java.util.regex.Pattern;
 
 public class LoginSignup {
     public static void main(String[] args) throws IOException {
-        Scanner scanner=new Scanner(System.in);
-        LoginSignup student1=new LoginSignup();
-        int studentChosenMenuNumber =student1.chooseStartMenuOption();
-        if(studentChosenMenuNumber ==1){
+        Scanner scanner = new Scanner(System.in);
+        LoginSignup student1 = new LoginSignup();
+        int studentChosenMenuNumber = student1.chooseStartMenuOption();
+        if (studentChosenMenuNumber == 1) {
             student1.signUp("D:\\java-projects\\FinalProject\\Data.txt");
-        }else{
+        } else {
             student1.logIn("D:\\java-projects\\FinalProject\\Data.txt");
         }
     }
+
+    public static boolean isExist(String userName, String userId, String address) throws FileNotFoundException {
+        File file = new File(address);
+        try (Scanner readFile = new Scanner(file)) {
+            while (readFile.hasNextLine()) {
+                String[] informations = readFile.nextLine().split(" ");
+                if (userId.equals(informations[2]) || userName.equals(informations[0])) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean LoginIsExist(String userNameId, String address) throws FileNotFoundException {
+        int checkingNumber;
+        if (Pattern.matches("[0-9]", String.valueOf(userNameId.charAt(0)))) {
+            checkingNumber = 2;
+        } else {
+            checkingNumber = 0;
+        }
+        File file = new File(address);
+        try (Scanner readFile = new Scanner(file)) {
+            while (readFile.hasNextLine()) {
+                String[] information = readFile.nextLine().split(" ");
+                if (userNameId.equals(information[checkingNumber])) {
+                    return true;
+                }
+            }
+        }
+        return false;
+
+    }
+
     //this method will show 2 option signup and login and user choose one of them
-    public int chooseStartMenuOption(){
+    public int chooseStartMenuOption() {
         System.out.println("please choose one number:");
         System.out.println("1-SignUp  2-SignIn");
-        Scanner scanner =new Scanner(System.in);
-        boolean flag =false;
-        int userChosenNumber =0;
-        while(!flag){
-            try{
+        Scanner scanner = new Scanner(System.in);
+        boolean flag = false;
+        int userChosenNumber = 0;
+        while (!flag) {
+            try {
                 userChosenNumber = scanner.nextInt();
-                if(userChosenNumber>2 || userChosenNumber<1){
+                if (userChosenNumber > 2 || userChosenNumber < 1) {
                     throw new InvalidUserActionException();
                 }
-                flag =true;
-            }catch(InvalidUserActionException e){
+                flag = true;
+            } catch (InvalidUserActionException e) {
                 System.out.println("please enter a valid number!!");
                 System.out.println("1-SignUp  2-SignIn");
             }
@@ -42,43 +76,46 @@ public class LoginSignup {
         System.out.println("-----------------------------");
         return userChosenNumber;
     }
+
     public void signUp(String address) throws IOException {
-        String userName =signUpUserName();
-        String userPassword=signUpPassword();
-        String userId =signUPStudentId();
-        check(userName,userId,userPassword,address);
+        String userName = signUpUserName();
+        String userPassword = signUpPassword();
+        String userId = signUPStudentId();
+        check(userName, userId, userPassword, address);
     }
-    public void check(String userName,String userId,String userPassword , String address) throws IOException {
-        while(isExist(userName,userId,address)){
-            try{
+
+    public void check(String userName, String userId, String userPassword, String address) throws IOException {
+        while (isExist(userName, userId, address)) {
+            try {
                 throw new UserAlreadyExistException("The account has already exist!!");
-            }catch(UserAlreadyExistException e){
+            } catch (UserAlreadyExistException e) {
                 System.out.println(e.getMessage());
-                userName=signUpUserName();
-                userPassword=signUpPassword();
-                userId=signUPStudentId();
+                userName = signUpUserName();
+                userPassword = signUpPassword();
+                userId = signUPStudentId();
             }
         }
         File file = new File(address);
-        try(FileWriter fileWriter=new FileWriter(file,true)){
-            fileWriter.write(String.format("%s %s %s\n",userName ,userPassword,userId));
+        try (FileWriter fileWriter = new FileWriter(file, true)) {
+            fileWriter.write(String.format("%s %s %s\n", userName, userPassword, userId));
         }
 
     }
-    public String signUpUserName(){
-        Scanner scanner=new Scanner(System.in);
+
+    public String signUpUserName() {
+        Scanner scanner = new Scanner(System.in);
         System.out.print("*your username:");
-        boolean flag=false;
+        boolean flag = false;
         String userName = "";
-        while(!flag){
-            try{
-                userName= scanner.next();
-                boolean check = Pattern.matches("[0-9!@#$%]" ,String.valueOf(userName.charAt(0)));
-                if(check){
+        while (!flag) {
+            try {
+                userName = scanner.next();
+                boolean check = Pattern.matches("[0-9!@#$%]", String.valueOf(userName.charAt(0)));
+                if (check) {
                     throw new InvalidUserActionException("your username can't be started with this letter!!");
                 }
-                flag=true;
-            }catch(InvalidUserActionException e){
+                flag = true;
+            } catch (InvalidUserActionException e) {
                 System.out.println(e.getMessage());
                 System.out.print("your username:");
             }
@@ -86,155 +123,134 @@ public class LoginSignup {
         }
         return userName;
     }
-    public String signUpPassword(){
-        Scanner scanner =new Scanner(System.in);
+
+    public String signUpPassword() {
+        Scanner scanner = new Scanner(System.in);
         System.out.print("*your password:");
-        boolean flag =false;
-        String userPassword="";
-        while(!flag){
-            try{
-                userPassword= scanner.next();
-                if(!Pattern.matches("^(?=.*[#$@!%&*?])(?=.*\\d)[A-Za-z\\d#$@!%&*?]{8,}$",userPassword)){
+        boolean flag = false;
+        String userPassword = "";
+        while (!flag) {
+            try {
+                userPassword = scanner.next();
+                if (!Pattern.matches("^(?=.*[#$@!%&*?])(?=.*\\d)[A-Za-z\\d#$@!%&*?]{8,}$", userPassword)) {
                     throw new InvalidUserActionException("your password isn't strong !!");
                 }
-                flag=true;
-            }catch(InvalidUserActionException e){
+                flag = true;
+            } catch (InvalidUserActionException e) {
                 System.out.println(e.getMessage());
                 System.out.print("*your password:");
             }
         }
         return userPassword;
     }
-    public String signUPStudentId(){
-        Scanner scanner=new Scanner(System.in);
-        boolean flag=false;
-        String userId="";
-        while(!flag){
-            try{
+
+    public String signUPStudentId() {
+        Scanner scanner = new Scanner(System.in);
+        boolean flag = false;
+        String userId = "";
+        while (!flag) {
+            try {
                 System.out.println("*your student id:");
-                userId =scanner.next();
-                if(!Pattern.matches("[0-9]{9}",userId)){
+                userId = scanner.next();
+                if (!Pattern.matches("[0-9]{9}", userId)) {
                     throw new InvalidUserActionException("your student id is invalid!!");
                 }
-                flag=true;
-            }catch(InvalidUserActionException e){
+                flag = true;
+            } catch (InvalidUserActionException e) {
                 System.out.println(e.getMessage());
                 System.out.print("your student id:");
             }
         }
         return userId;
     }
-    public static boolean isExist(String userName,String userId,String address) throws FileNotFoundException {
-        File file =new File(address);
-        try(Scanner readFile = new Scanner(file)){
-            while(readFile.hasNextLine()){
-                String[] informations = readFile.nextLine().split(" ");
-                if(userId.equals(informations[2]) || userName.equals(informations[0])){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+
     public void logIn(String address) throws FileNotFoundException {
-        String userNameId =loginUserNameId();
-        String userPassword =longInPassword();
-        logInCheck(userNameId ,userPassword,address);
+        String userNameId = loginUserNameId();
+        String userPassword = longInPassword();
+        logInCheck(userNameId, userPassword, address);
     }
-    public void logInCheck(String userNameId , String userPassword,String address) throws FileNotFoundException {
+
+    public void logInCheck(String userNameId, String userPassword, String address) throws FileNotFoundException {
         String userInformation = userNameId;
         int checkingNumber;
-        if(Pattern.matches("[0-9]",userNameId)){
-            checkingNumber =2;
-        }else{
-            checkingNumber =0;
+        if (Pattern.matches("[0-9]", userNameId)) {
+            checkingNumber = 2;
+        } else {
+            checkingNumber = 0;
         }
-        while(!LoginIsExist(userNameId,address)){
+        while (!LoginIsExist(userNameId, address)) {
             System.out.println("The account isn't exist!!");
-            userInformation =userNameId = loginUserNameId();
+            userInformation = userNameId = loginUserNameId();
         }
-        File file =new File(address);
-        boolean isPasswordMatched =false;
-        try(Scanner readFile = new Scanner(file)){
-            while(readFile.hasNextLine()){
-                String[] information =readFile.nextLine().split(" ");
-                if(information[1].equals(userPassword)){
-                    isPasswordMatched=true;
+        File file = new File(address);
+        boolean isPasswordMatched = false;
+        try (Scanner readFile = new Scanner(file)) {
+            while (readFile.hasNextLine()) {
+                String[] information = readFile.nextLine().split(" ");
+                if (information[1].equals(userPassword)) {
+                    isPasswordMatched = true;
                 }
             }
-            if(isPasswordMatched){
+            if (isPasswordMatched) {
                 System.out.printf("Welcome %s%n", userNameId);
-            }else{
+            } else {
                 System.out.println("your password isn't matched!!");
             }
         }
     }
-    public static boolean LoginIsExist(String userNameId , String address) throws FileNotFoundException {
-        int checkingNumber;
-        if(Pattern.matches("[0-9]" , String.valueOf(userNameId.charAt(0)))){
-            checkingNumber = 2;
-        }else{
-            checkingNumber = 0;
-        }
-        File file =new File(address);
-        try(Scanner readFile = new Scanner(file)){
-            while(readFile.hasNextLine()){
-                String[] information = readFile.nextLine().split(" ");
-                if(userNameId.equals(information[checkingNumber])){
-                    return true;
-                }
-            }
-        }
-        return false;
 
-    }
-    public String loginUserNameId(){
-        Scanner scanner=new Scanner(System.in);
-        String userNameId="";
+    public String loginUserNameId() {
+        Scanner scanner = new Scanner(System.in);
+        String userNameId = "";
         System.out.print("*your username or id:");
-        try{
+        try {
             userNameId = scanner.next();
-            if(Pattern.matches("[0-9]" , String.valueOf(userNameId.charAt(0)))) {
-                boolean flag=false;
-                while(!flag){
-                    try{
+            if (Pattern.matches("[0-9]", String.valueOf(userNameId.charAt(0)))) {
+                boolean flag = false;
+                while (!flag) {
+                    try {
                         System.out.println("*your student id:");
-                        userNameId =scanner.next();
-                        if(!Pattern.matches("[0-9]{9}",userNameId)){
+                        userNameId = scanner.next();
+                        if (!Pattern.matches("[0-9]{9}", userNameId)) {
                             throw new InvalidUserActionException("your student id is invalid!!");
                         }
-                        flag=true;
-                    }catch(InvalidUserActionException e){
+                        flag = true;
+                    } catch (InvalidUserActionException e) {
                         System.out.println(e.getMessage());
                     }
                 }
-            }else{
-                userNameId =signUpUserName();
+            } else {
+                userNameId = signUpUserName();
             }
-        }catch(InvalidUserActionException e){
+        } catch (InvalidUserActionException e) {
             System.out.println(e.getMessage());
         }
 
-    return userNameId;
+        return userNameId;
     }
-    public String longInPassword(){
+
+    public String longInPassword() {
         return signUpPassword();
     }
 
 }
-class InvalidUserActionException extends RuntimeException{
-    public InvalidUserActionException(){
+
+class InvalidUserActionException extends RuntimeException {
+    public InvalidUserActionException() {
         super();
     }
-    public InvalidUserActionException(String message){
+
+    public InvalidUserActionException(String message) {
         super(message);
     }
 }
-class UserAlreadyExistException extends RuntimeException{
-    public UserAlreadyExistException(){
+
+class UserAlreadyExistException extends RuntimeException {
+    public UserAlreadyExistException() {
         super();
     }
-    public UserAlreadyExistException(String message){
+
+    public UserAlreadyExistException(String message) {
         super(message);
     }
 }
