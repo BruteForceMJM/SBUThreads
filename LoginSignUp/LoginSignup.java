@@ -51,7 +51,6 @@ public class LoginSignup {
             }
         }
         return false;
-
     }
 
     //this method will show 2 option signup and login and user choose one of them
