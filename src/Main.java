@@ -26,33 +26,6 @@ public class Main {
         professor1.scoreStudent(course1, student3, 20.0);
         System.out.println(student1.getAdoptedUnitsNum());
         System.out.println(student1.getTotalAverage());
-
-//
-//
-//
-//        System.out.println(professor1.addAssignment(course2, assignment1));
-//        System.out.println(professor1.addCourse(course1));
-//        System.out.println(professor1.addAssignment(course1, assignment1));
-////        System.out.println(professor1.addStudent(course1, student1));
-////        System.out.println(professor1.addStudent(course1, student2));
-//        System.out.println(professor1.scoreStudent(course1, student2, 15D));
-//        System.out.println(professor1.scoreAssignment(course1, assignment1, student1, 5D));
-//        System.out.println(professor1.scoreStudent(course1, student1, 9D));
-//        System.out.println("best score: " + course1.bestScore());
-//
-//
-//        student1.getCourses();
-//        assignment1.showTime();
-//        System.out.println(student1.getCurrentCoursesNum());
-//        System.out.println(student1.getAdoptedUnitsNum());
-//        System.out.println(student1.getTotalAverage());
-//        Project project1 = new Project("065", 3, 0);
-//        System.out.println(professor2.addProject(course1, project1));
-//        System.out.println(professor2.addCourse(course2));
-////        System.out.println(professor2.addStudent(course2, student1));
-//        System.out.println(professor2.scoreStudent(course2, student1, 8D));
-//        System.out.println("total average: " + student1.getGPAOfCurrentSemester());
-//        student1.getCourses();
-//        course1.getStudents();
+        
     }
 }
