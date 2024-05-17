@@ -26,6 +26,6 @@ public class Main {
         professor1.scoreStudent(course1, student3, 20.0);
         System.out.println(student1.getAdoptedUnitsNum());
         System.out.println(student1.getTotalAverage());
-        
+
     }
 }
