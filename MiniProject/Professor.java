@@ -29,21 +29,6 @@ public class Professor {
         return courses.size();
     }
 
-    public void addStudent(Course course, Student student) throws Exception {
-        if (!courses.contains(course)) {
-            throw new IllegalActionException();
-        }
-        course.addStudent(student);
-        student.addCurrentCourse(course);
-    }
-
-    public void removeStudent(Course course, Student student) throws Exception {
-        if (!courses.contains(course)) {
-            throw new IllegalActionException();
-        }
-        course.removeStudent(student);
-    }
-
     public void scoreStudent(Course course, Student student, Double score) throws Exception {
         if (!courses.contains(course)) {
             throw new IllegalActionException();
