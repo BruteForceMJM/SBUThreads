@@ -57,17 +57,20 @@ class StudentData {
 public class Course {
     private final HashSet<StudentData> studentsData = new HashSet<>();
     private final LinkedList<Task> tasks = new LinkedList<>();
+    private final Semester semester;
     private String courseName;
     private Professor professor;
     private int unitsNum;
     private boolean isAvailable;
     private LocalDateTime examDate;
 
-    public Course(String courseName, Professor professor, int unitsNum) {
+    public Course(String courseName, Professor professor, Semester semester, int unitsNum) {
         this.courseName = courseName;
         this.professor = professor;
+        this.semester = semester;
         this.unitsNum = unitsNum;
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -98,6 +101,10 @@ public class Course {
 
     public void setProfessor(Professor professor) {
         this.professor = professor;
+    }
+
+    public Semester getSemester() {
+        return semester;
     }
 
     public void getExamDate() {

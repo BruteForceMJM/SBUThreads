@@ -3,12 +3,15 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 public class Student {
     private final List<Course> courses = new ArrayList<>();
-    private final List<Course> currentCourses = new ArrayList<>();
     private final String name;
     private final String ID;
+    private List<Course> currentCourses = new ArrayList<>();
+    private Semester currentSemester = Semester.ONE;
+
 
     public Student(String name, String ID) {
         this.name = name;
@@ -20,7 +23,24 @@ public class Student {
     }
 
     public List<Course> getCurrentCourses() {
+        updateCurrentCourses();
         return new ArrayList<>(currentCourses);
+    }
+
+    private void updateCurrentCourses() {
+        currentCourses = currentCourses
+                .stream()
+                .parallel()
+                .filter(course -> course.getSemester().equals(currentSemester))
+                .collect(Collectors.toList());
+    }
+
+    public Semester getCurrentSemester() {
+        return currentSemester;
+    }
+
+    public void setCurrentSemester(Semester currentSemester) {
+        this.currentSemester = currentSemester;
     }
 
     public String getName() {
@@ -32,6 +52,7 @@ public class Student {
     }
 
     public int getCurrentCoursesNum() {
+        updateCurrentCourses();
         return currentCourses.size();
     }
 
@@ -40,6 +61,7 @@ public class Student {
     }
 
     public int getAdoptedUnitsNum() {
+        updateCurrentCourses();
         AtomicInteger adoptedUnitsNum = new AtomicInteger(0);
         currentCourses.stream()
                 .parallel()
@@ -72,29 +94,30 @@ public class Student {
                 .parallel()
                 .forEach(course -> totalAverage.updateAndGet(v -> {
                     try {
-                        return v + course.getStudentsGrades().get(this);
+                        return v + course.getStudentsGrades().get(this) * course.getUnitsNum();
                     } catch (StudentDoesNotExistsException e) {
                         throw new RuntimeException(e);
                     }
                 }));
-        return totalAverage.get() / courses.size();
+        return totalAverage.get() / getTotalUnitsNum();
     }
 
     public double getGPAOfCurrentSemester() throws Exception {
         if (currentCourses.isEmpty()) {
             throw new NoCoursesAvailableException();
         }
+        updateCurrentCourses();
         AtomicReference<Double> GPAOfCurrentSemester = new AtomicReference<>(0D);
         currentCourses.stream()
                 .parallel()
                 .forEach(course -> GPAOfCurrentSemester.updateAndGet(v -> {
                     try {
-                        return v + course.getStudentsGrades().get(this);
+                        return v + course.getStudentsGrades().get(this) * course.getUnitsNum();
                     } catch (StudentDoesNotExistsException e) {
                         throw new RuntimeException(e);
                     }
                 }));
-        return GPAOfCurrentSemester.get() / currentCourses.size();
+        return GPAOfCurrentSemester.get() / getAdoptedUnitsNum();
     }
 
     @Override
