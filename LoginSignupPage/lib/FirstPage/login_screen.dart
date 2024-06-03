@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:login_signup_page/FirstPage/Signup.dart';
 import 'package:login_signup_page/widgets/next_button.dart';
 import 'package:login_signup_page/widgets/social_button.dart';
 class LoginScreen extends StatelessWidget {
@@ -6,25 +7,26 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: SingleChildScrollView(
           child: Center(
             child: Column(
               children: [
-                Image.asset('assets/images/signin_balls.png'),
-                const Text('دانشجویار',
+                SizedBox(height: 80,),
+                Text('دانشجویار',
                   style: TextStyle(
                       fontWeight: FontWeight.w800,
                       fontSize: 40
                   ),),
-                const SizedBox(
+                SizedBox(
                   height: 50,
                 ),
-                const SocialButton(iconPath: 'assets/svgs/g_logo.svg', label: 'اتصال با گوگل'),
-                const SizedBox(height: 10,),
-                const NextButton(label: 'ورود به برنامه'),
-                const SizedBox(height: 10,),
-                const NextButton(label: 'ثبت نام',horizontalPadding: 125,)
+                SocialButton(iconPath: 'assets/svgs/g_logo.svg', label: 'اتصال با گوگل'),
+                SizedBox(height: 10,),
+                NextButton(label: 'ورود به برنامه'),
+                SizedBox(height: 10,),
+                NextButton(label: 'ثبت نام',horizontalPadding: 125,),
+
 
               ],
             ),
