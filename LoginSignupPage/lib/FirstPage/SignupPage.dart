@@ -71,6 +71,7 @@ class SignupPage extends StatelessWidget {
                         TextFormField(
                           obscureText: true,
                           decoration: const InputDecoration(
+                            suffixIcon: Icon(CupertinoIcons.eye_fill),
                             hintText: 'Password',
                             contentPadding: EdgeInsets.all(20),
                             enabledBorder: OutlineInputBorder(
@@ -108,11 +109,26 @@ class SignupPage extends StatelessWidget {
                               ),
                             ),
                           ),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         DropdownButtonFormField(
                           value: _role,
                             decoration: const InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Pallete.borderColor,
+                                )
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Pallete.gradient2
+                                )
+                              ),
+                              fillColor: Pallete.backgroundColor,
                               labelText: 'نقش',
                               prefixIcon: Icon(CupertinoIcons.add),
+                              filled: true,
 
                             ),
                             items: const [
@@ -125,9 +141,14 @@ class SignupPage extends StatelessWidget {
                                 _role = value!;
                               });
                             } ),
-                        const SizedBox(
-                          height: 200,
-                        ),
+                        if(situation=='Login')
+                          const SizedBox(
+                            height: 220,
+                          ),
+                        if(situation=='Signup')
+                          const SizedBox(
+                            height: 160,
+                          ),
                         const GradientButton(),
                         const SizedBox(
                           height: 10,
