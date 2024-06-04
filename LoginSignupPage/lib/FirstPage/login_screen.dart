@@ -7,25 +7,27 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return  Scaffold(
       body: SingleChildScrollView(
           child: Center(
             child: Column(
               children: [
-                SizedBox(height: 80,),
-                Text('دانشجویار',
+                const SizedBox(height: 80,),
+                const Text('دانشجویار',
                   style: TextStyle(
                       fontWeight: FontWeight.w800,
                       fontSize: 40
                   ),),
-                SizedBox(
+                const SizedBox(
                   height: 50,
                 ),
-                SocialButton(iconPath: 'assets/svgs/g_logo.svg', label: 'اتصال با گوگل'),
-                SizedBox(height: 10,),
-                NextButton(label: 'ورود به برنامه',situation: 'Login',),
-                SizedBox(height: 10,),
-                NextButton(label: 'ثبت نام',horizontalPadding: 125,situation: 'Signup',),
+                const SocialButton(iconPath: 'assets/svgs/g_logo.svg', label: 'اتصال با گوگل'),
+                const SizedBox(height: 10,),
+                const NextButton(label: 'ورود به برنامه',situation: 'Login',),
+                const SizedBox(height: 10,),
+                const NextButton(label: 'ثبت نام',horizontalPadding: 125,situation: 'Signup',),
+                const SizedBox(height: 130,),
+                Image.asset('assets/images/blogo.jpg',width: 150,height: 150,)
 
 
               ],
