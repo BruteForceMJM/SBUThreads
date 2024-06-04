@@ -82,7 +82,6 @@ class Signup extends StatelessWidget {
             const SizedBox(
               height: 220,
             ),
-            const GradientButton(),
             const SizedBox(
               height: 10,
             ),

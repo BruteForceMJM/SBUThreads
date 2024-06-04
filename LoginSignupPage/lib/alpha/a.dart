@@ -1,51 +1,56 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const CupertinoApp(
-    title: 'Navigation Basics',
-    home: FirstRoute(),
-  ));
+  runApp(MyApp());
 }
 
-class FirstRoute extends StatelessWidget {
-  const FirstRoute({super.key});
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: const CupertinoNavigationBar(
-        middle: Text('First Route'),
-      ),
-      child: Center(
-        child: CupertinoButton(
-          child: const Text('Open route'),
-          onPressed: () {
-            Navigator.push(
-              context,
-              CupertinoPageRoute(builder: (context) => const SecondRoute()),
-            );
-          },
-        ),
-      ),
+    return MaterialApp(
+      home: PasswordToggle(),
     );
   }
 }
 
-class SecondRoute extends StatelessWidget {
-  const SecondRoute({super.key});
+class PasswordToggle extends StatefulWidget {
+  @override
+  _PasswordToggleState createState() => _PasswordToggleState();
+}
+
+class _PasswordToggleState extends State<PasswordToggle> {
+  bool _obscureText = true;
+
+  void _togglePasswordVisibility() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: const CupertinoNavigationBar(
-        middle: Text('Second Route'),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Password Visibility Toggle'),
       ),
-      child: Center(
-        child: CupertinoButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: const Text('Go back!'),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextFormField(
+              obscureText: _obscureText,
+              decoration: InputDecoration(
+                labelText: 'Enter your password',
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _obscureText ? Icons.visibility : Icons.visibility_off,
+                  ),
+                  onPressed: _togglePasswordVisibility,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

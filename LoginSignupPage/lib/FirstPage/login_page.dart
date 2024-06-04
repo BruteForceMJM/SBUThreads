@@ -1,0 +1,268 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+import 'GradientButton.dart';
+import 'Pallete.dart';
+import 'login_screen.dart';
+
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final _formKey = GlobalKey<FormState>();
+  String _username = '';
+  String _password = '';
+  String _role = 'student';
+
+  bool _validateRole(String username) {
+    if (username == 'admin' && _role == 'admin') return true;
+    if (username.length == 9 && RegExp(r'^\d+$').hasMatch(username)) {
+      return true;
+    }
+    return false;
+  }
+
+  bool _validatePassword(String password) {
+    if (_username == 'admin' && password == 'admin') {
+      return true; // Admin specific validation
+    }
+    final regex = RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\W).+$');
+    return regex.hasMatch(password);
+  }
+
+
+
+  void _login() {
+    if(_formKey.currentState!=null){
+      if (_formKey.currentState!.validate()) {
+        if (_username == 'admin' && _password == 'admin') {
+          Navigator.pushNamed(context, '/admin');
+        } else if (RegExp(r'^\d{9}$').hasMatch(_username)) {
+          Navigator.pushNamed(
+              context, _role == 'student' ? '/student' : '/teacher');
+        }
+      }
+    }
+
+  }
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 200,
+                ),
+                const Text(
+                  'ورود',
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      maxWidth: 300,
+                    ),
+                    child:Form(
+                      key: _formKey,
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              decoration: const InputDecoration(
+                                hintText: 'Username',
+                                contentPadding: EdgeInsets.all(20),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Pallete.borderColor,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Pallete.gradient2,
+                                    width: 4,
+                                  ),
+                                ),
+                              ),
+                              onChanged: (value) => _username = value,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'لطفا نام کاربری خود را وارد کنید';
+                                }
+                                if (!_validateRole(value)) {
+                                  return 'نام کاربری وارد شده صحیح نیست';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            TextFormField(
+                              decoration: InputDecoration(
+                                suffixIcon: IconButton(
+                                  onPressed: () {
+                                    setState(() {});
+                                  },
+                                  icon: const Icon(
+                                    CupertinoIcons.eye_fill,
+                                  ),
+                                ),
+                                hintText: 'Password',
+                                contentPadding: const EdgeInsets.all(20),
+                                enabledBorder: const OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Pallete.borderColor,
+                                  ),
+                                ),
+                                focusedBorder: const OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Pallete.gradient2,
+                                    width: 4,
+                                  ),
+                                ),
+                              ),
+                              onChanged: (value) => _password = value,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'رمز عبور باید وارد شود';
+                                }
+                                if (!_validatePassword(value)) {
+                                  return 'رمز عبور به اندازه کافی قوی نیست';
+                                }
+                                return null;
+                              },
+                              obscureText: true,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            DropdownButtonFormField(
+                                value: _role,
+                                decoration: const InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Pallete.borderColor,
+                                      )),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide:
+                                      BorderSide(color: Pallete.gradient2)),
+                                  fillColor: Pallete.backgroundColor,
+                                  labelText: 'نقش',
+                                  prefixIcon: Icon(CupertinoIcons.add),
+                                  filled: true,
+                                ),
+                                items: const [
+                                  DropdownMenuItem(
+                                    value: 'admin',
+                                    child: Text('ادمین'),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: 'professor',
+                                    child: Text('استاد'),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: 'student',
+                                    child: Text('دانشجو'),
+                                  )
+                                ],
+                                onChanged: (value) {
+                                  setState(() {
+                                    _role = value!;
+                                  });
+                                }),
+                            const SizedBox(
+                              height: 160,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  gradient: const LinearGradient(colors: [
+                                    Pallete.gradient1,
+                                    Pallete.gradient2,
+                                    Pallete.gradient3,
+                                  ], begin: Alignment.bottomLeft),
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: ElevatedButton(
+                                onPressed: _login,
+                                style: ElevatedButton.styleFrom(
+                                  fixedSize: const Size(400, 60),
+                                  backgroundColor: Colors.transparent,
+                                ),
+                                child: const Text(
+                                  'ورود',
+                                  style: TextStyle(
+                                    color: Pallete.whiteColor,
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              decoration: const BoxDecoration(
+                                  gradient: LinearGradient(colors: [
+                                    Pallete.gradient1,
+                                    Pallete.gradient2,
+                                    Pallete.gradient3
+                                  ])),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                          const LoginScreen()));
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    fixedSize: const Size(400, 60),
+                                    backgroundColor: Colors.transparent),
+                                child: const Text(
+                                  'بازگشت',
+                                  style: TextStyle(
+                                    color: Pallete.whiteColor,
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                          ],
+                        )
+                    ) ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      theme: ThemeData.dark().copyWith(
+        scaffoldBackgroundColor: Pallete.backgroundColor,
+      ),
+    );
+  }
+}

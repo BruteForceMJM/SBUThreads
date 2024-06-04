@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:login_signup_page/FirstPage/login_page.dart';
 import 'package:login_signup_page/FirstPage/Pallete.dart';
 import 'package:login_signup_page/FirstPage/Signup.dart';
 import 'package:login_signup_page/FirstPage/SignupPage.dart';
@@ -20,7 +21,7 @@ class NextButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(onPressed: (){
       Navigator.push(context,
-      MaterialPageRoute(builder: (context)=>SignupPage(situation: situation,)));
+      MaterialPageRoute(builder: (context)=>const LoginPage()));
     },
       style: TextButton.styleFrom(
           padding: EdgeInsets.symmetric(vertical: 30 , horizontal: horizontalPadding),
