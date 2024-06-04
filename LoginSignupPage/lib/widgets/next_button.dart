@@ -7,18 +7,20 @@ import 'package:login_signup_page/FirstPage/SignupPage.dart';
 class NextButton extends StatelessWidget {
   final String label;
   final double horizontalPadding;
+  final String situation;
 
   const NextButton({
     super.key,
     required this.label,
-    this.horizontalPadding =100
+    this.horizontalPadding =100,
+    required this.situation
   });
 
   @override
   Widget build(BuildContext context) {
     return TextButton(onPressed: (){
       Navigator.push(context,
-      MaterialPageRoute(builder: (context)=>const SignupPage()));
+      MaterialPageRoute(builder: (context)=>SignupPage(situation: situation,)));
     },
       style: TextButton.styleFrom(
           padding: EdgeInsets.symmetric(vertical: 30 , horizontal: horizontalPadding),

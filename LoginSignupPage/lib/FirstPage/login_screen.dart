@@ -23,9 +23,9 @@ class LoginScreen extends StatelessWidget {
                 ),
                 SocialButton(iconPath: 'assets/svgs/g_logo.svg', label: 'اتصال با گوگل'),
                 SizedBox(height: 10,),
-                NextButton(label: 'ورود به برنامه'),
+                NextButton(label: 'ورود به برنامه',situation: 'Login',),
                 SizedBox(height: 10,),
-                NextButton(label: 'ثبت نام',horizontalPadding: 125,),
+                NextButton(label: 'ثبت نام',horizontalPadding: 125,situation: 'Signup',),
 
 
               ],
