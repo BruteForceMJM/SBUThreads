@@ -39,7 +39,7 @@ class SignupPage extends StatelessWidget {
                   children: [
                     TextFormField(
                       decoration: const InputDecoration(
-                        hintText: 'Email',
+                        hintText: 'Username',
                         contentPadding: EdgeInsets.all(20),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
