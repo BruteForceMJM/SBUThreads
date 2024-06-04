@@ -1,8 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:login_signup_page/FirstPage/student_classes_page.dart';
+import 'package:login_signup_page/FirstPage/student_home_page.dart';
+import 'package:login_signup_page/FirstPage/student_news_page.dart';
+import 'package:login_signup_page/FirstPage/student_page.dart';
+import 'package:login_signup_page/FirstPage/student_tasks_page.dart';
+import 'package:login_signup_page/FirstPage/student_to_do_list_page.dart';
 
+import '../alpha/a.dart';
 import 'GradientButton.dart';
 import 'Pallete.dart';
+import 'SignupPage.dart';
+import 'admin_page.dart';
 import 'login_screen.dart';
 
 class LoginPage extends StatefulWidget {
@@ -263,6 +272,18 @@ class _LoginPageState extends State<LoginPage> {
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: Pallete.backgroundColor,
       ),
+      initialRoute: '/',
+      routes: {
+        '/login': (context) => const LoginPage(),
+        //'/signup': (context) => SignupPage(),
+        '/admin': (context) => const AdminPage(),
+        '/student': (context) => const StudentPage(),
+        '/home': (context) => const StudentHomePage(),
+        '/news': (context) => const StudentNewsPage(),
+        '/classes': (context) => const StudentClassesPage(),
+        '/tasks': (context) => const StudentTasksPage(),
+        '/todo': (context) => const StudentToDoListPage(),
+      },
     );
   }
 }

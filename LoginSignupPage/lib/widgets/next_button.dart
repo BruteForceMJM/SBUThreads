@@ -5,6 +5,8 @@ import 'package:login_signup_page/FirstPage/Pallete.dart';
 import 'package:login_signup_page/FirstPage/Signup.dart';
 import 'package:login_signup_page/FirstPage/SignupPage.dart';
 
+import '../FirstPage/signup_page.dart';
+
 class NextButton extends StatelessWidget {
   final String label;
   final double horizontalPadding;
@@ -20,8 +22,15 @@ class NextButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(onPressed: (){
-      Navigator.push(context,
-      MaterialPageRoute(builder: (context)=>const LoginPage()));
+      if(label=='ثبت نام'){
+        Navigator.push(context,
+        MaterialPageRoute(builder: (context) => SiignupPage()));
+      }
+      if(label=='ورود به برنامه'){
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context)=>const LoginPage()));
+      }
+
     },
       style: TextButton.styleFrom(
           padding: EdgeInsets.symmetric(vertical: 30 , horizontal: horizontalPadding),
