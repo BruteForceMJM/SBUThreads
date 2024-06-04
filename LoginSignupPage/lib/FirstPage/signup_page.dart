@@ -65,163 +65,189 @@ class _SignupPageState extends State<SiignupPage>{
                     constraints: const BoxConstraints(
                       maxWidth: 300,
                     ),
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          decoration: const InputDecoration(
-                            hintText: 'Username',
-                            contentPadding: EdgeInsets.all(20),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Pallete.borderColor,
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Pallete.gradient2,
-                                width: 4,
-                              ),
-                            ),
-                          ),
-                          onChanged: (value)=>_username=value,
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        TextFormField(
-
-                          decoration:  InputDecoration(
-                            suffixIcon: IconButton(onPressed: (){
-                              setState(() {
-                              });
-                            },
-                              icon: const Icon(
-                                  CupertinoIcons.eye_fill
-                              ),
-                            ),
-                            hintText: 'Password',
-                            contentPadding: const EdgeInsets.all(20),
-                            enabledBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Pallete.borderColor,
-                              ),
-
-                            ),
-                            focusedBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Pallete.gradient2,
-                                width: 4,
-                              ),
-                            ),
-                          ),
-                          onChanged: (value)=>_password=value,
-                          validator: (value) {
-                            if(value==null || value.isEmpty){
-                              return 'رمز عبور باید وارد شود';
-                            }
-                            if(!_validatePassword(value)){
-                              return 'رمز عبور به اندازه کافی قوی نیست';
-                            }
-                            return null;
-                          },
-                          obscureText: true,
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        TextFormField(
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            hintText: 'Confirm Password',
-                            suffixIcon: IconButton(onPressed: (){},
-                                icon: const Icon(CupertinoIcons.eye_fill)),
-                            contentPadding: const EdgeInsets.all(20),
-                            enabledBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Pallete.borderColor,
-                              ),
-                            ),
-                            focusedBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Pallete.gradient2,
-                                width: 4,
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        DropdownButtonFormField(
-                            value: _role,
-                            decoration: const InputDecoration(
-                              enabledBorder: OutlineInputBorder(
+                    child: Form(
+                      key: _formKey,
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              decoration: const InputDecoration(
+                                hintText: 'Username',
+                                contentPadding: EdgeInsets.all(20),
+                                enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
                                     color: Pallete.borderColor,
-                                  )
-                              ),
-                              focusedBorder: OutlineInputBorder(
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: Pallete.gradient2
-                                  )
+                                    color: Pallete.gradient2,
+                                    width: 4,
+                                  ),
+                                ),
                               ),
-                              fillColor: Pallete.backgroundColor,
-                              labelText: 'نقش',
-                              prefixIcon: Icon(CupertinoIcons.add),
-                              filled: true,
-
+                              onChanged: (value)=>_username=value,
                             ),
-                            items: const [
-                              DropdownMenuItem(value: 'admin',child: Text('ادمین'),),
-                              DropdownMenuItem(value: 'professor',child: Text('استاد'),),
-                              DropdownMenuItem(value: 'student',child: Text('دانشجو'),)
-                            ],
-                            onChanged: (value) {
-                              setState((){
-                                _role=value!;
-                              });
-                            }),
-                        const SizedBox(
-                          height: 160,
-                        ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            TextFormField(
 
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          decoration: const BoxDecoration(
-                              gradient: LinearGradient(colors: [
-                                Pallete.gradient1,
-                                Pallete.gradient2,
-                                Pallete.gradient3
-                              ])),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                      const LoginScreen()));
-                            },
-                            style: ElevatedButton.styleFrom(
-                                fixedSize: const Size(400, 60),
-                                backgroundColor: Colors.transparent),
-                            child: const Text(
-                              'بازگشت',
-                              style: TextStyle(
-                                color: Pallete.whiteColor,
-                                fontSize: 17,
-                                fontWeight: FontWeight.w600,
+                              decoration:  InputDecoration(
+                                suffixIcon: IconButton(onPressed: (){
+                                  setState(() {
+                                  });
+                                },
+                                  icon: const Icon(
+                                      CupertinoIcons.eye_fill
+                                  ),
+                                ),
+                                hintText: 'Password',
+                                contentPadding: const EdgeInsets.all(20),
+                                enabledBorder: const OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Pallete.borderColor,
+                                  ),
+
+                                ),
+                                focusedBorder: const OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Pallete.gradient2,
+                                    width: 4,
+                                  ),
+                                ),
+                              ),
+                              onChanged: (value)=>_password=value,
+                              validator: (value) {
+                                if(value==null || value.isEmpty){
+                                  return 'رمز عبور باید وارد شود';
+                                }
+                                if(!_validatePassword(value)){
+                                  return 'رمز عبور به اندازه کافی قوی نیست';
+                                }
+                                return null;
+                              },
+                              obscureText: true,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            TextFormField(
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                hintText: 'Confirm Password',
+                                suffixIcon: IconButton(onPressed: (){},
+                                    icon: const Icon(CupertinoIcons.eye_fill)),
+                                contentPadding: const EdgeInsets.all(20),
+                                enabledBorder: const OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Pallete.borderColor,
+                                  ),
+                                ),
+                                focusedBorder: const OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Pallete.gradient2,
+                                    width: 4,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
 
-                      ],
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            DropdownButtonFormField(
+                                value: _role,
+                                decoration: const InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Pallete.borderColor,
+                                      )
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Pallete.gradient2
+                                      )
+                                  ),
+                                  fillColor: Pallete.backgroundColor,
+                                  labelText: 'نقش',
+                                  prefixIcon: Icon(CupertinoIcons.add),
+                                  filled: true,
+
+                                ),
+                                items: const [
+                                  DropdownMenuItem(value: 'admin',child: Text('ادمین'),),
+                                  DropdownMenuItem(value: 'professor',child: Text('استاد'),),
+                                  DropdownMenuItem(value: 'student',child: Text('دانشجو'),)
+                                ],
+                                onChanged: (value) {
+                                  setState((){
+                                    _role=value!;
+                                  });
+                                }),
+                            const SizedBox(
+                              height: 160,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  gradient: const LinearGradient(colors: [
+                                    Pallete.gradient1,
+                                    Pallete.gradient2,
+                                    Pallete.gradient3,
+                                  ], begin: Alignment.bottomLeft),
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: ElevatedButton(
+                                onPressed: _signup,
+                                style: ElevatedButton.styleFrom(
+                                  fixedSize: const Size(400, 60),
+                                  backgroundColor: Colors.transparent,
+                                ),
+                                child: const Text(
+                                  'ورود',
+                                  style: TextStyle(
+                                    color: Pallete.whiteColor,
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              decoration: const BoxDecoration(
+                                  gradient: LinearGradient(colors: [
+                                    Pallete.gradient1,
+                                    Pallete.gradient2,
+                                    Pallete.gradient3
+                                  ])),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                          const LoginScreen()));
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    fixedSize: const Size(400, 60),
+                                    backgroundColor: Colors.transparent),
+                                child: const Text(
+                                  'بازگشت',
+                                  style: TextStyle(
+                                    color: Pallete.whiteColor,
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+
+                          ],
+                        )
                     )),
               ],
             ),

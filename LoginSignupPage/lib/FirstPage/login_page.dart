@@ -6,6 +6,7 @@ import 'package:login_signup_page/FirstPage/student_news_page.dart';
 import 'package:login_signup_page/FirstPage/student_page.dart';
 import 'package:login_signup_page/FirstPage/student_tasks_page.dart';
 import 'package:login_signup_page/FirstPage/student_to_do_list_page.dart';
+import 'package:login_signup_page/FirstPage/tacher_page.dart';
 
 import '../alpha/a.dart';
 import 'GradientButton.dart';
@@ -49,10 +50,15 @@ class _LoginPageState extends State<LoginPage> {
     if(_formKey.currentState!=null){
       if (_formKey.currentState!.validate()) {
         if (_username == 'admin' && _password == 'admin') {
-          Navigator.pushNamed(context, '/admin');
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const AdminPage()));
         } else if (RegExp(r'^\d{9}$').hasMatch(_username)) {
-          Navigator.pushNamed(
-              context, _role == 'student' ? '/student' : '/teacher');
+          if(_role=='student'){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const StudentPage()));
+          }else if(_role=='teacher'){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => TeacherPage()));
+          }
+          /*Navigator.pushNamed(
+              context, _role == 'student' ? '/student' : '/teacher');*/
         }
       }
     }
