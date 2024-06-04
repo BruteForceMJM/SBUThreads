@@ -18,10 +18,18 @@ class SignupPage extends StatelessWidget {
             child: Column(
               children: [
                 const SizedBox(height: 200,),
-                const Text('ثبت نام', style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.w800,
-                ),),
+                if(situation =='Signup')
+                  const Text(
+                    'ثبت نام', style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.w800,
+                  ),),
+                if(situation=='Login')
+                  const Text(
+                    'ورود', style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.w800,
+                  ),),
                 const SizedBox(height: 20,),
             ConstrainedBox(
                 constraints: const BoxConstraints(
