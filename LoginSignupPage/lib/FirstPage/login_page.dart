@@ -28,6 +28,13 @@ class _LoginPageState extends State<LoginPage> {
   String _password = '';
   String _role = 'student';
 
+  bool _isInvisible=true;
+  void _changeVisibilityStatus(){
+    setState(() {
+      _isInvisible=!_isInvisible;
+    });
+  }
+
   bool _validateRole(String username) {
     if (username == 'admin' && _role == 'admin') return true;
     if (username.length == 9 && RegExp(r'^\d+$').hasMatch(username)) {
@@ -55,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
           if(_role=='student'){
             Navigator.push(context, MaterialPageRoute(builder: (context) => const StudentPage()));
           }else if(_role=='teacher'){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => TeacherPage()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) =>TeacherPage()));
           }
           /*Navigator.pushNamed(
               context, _role == 'student' ? '/student' : '/teacher');*/
@@ -131,10 +138,12 @@ class _LoginPageState extends State<LoginPage> {
                               decoration: InputDecoration(
                                 suffixIcon: IconButton(
                                   onPressed: () {
-                                    setState(() {});
+                                    setState(() {
+                                      _changeVisibilityStatus();
+                                    });
                                   },
-                                  icon: const Icon(
-                                    CupertinoIcons.eye_fill,
+                                  icon: Icon(
+                                    _isInvisible? Icons.visibility : Icons.visibility_off,
                                   ),
                                 ),
                                 hintText: 'Password',
@@ -161,7 +170,7 @@ class _LoginPageState extends State<LoginPage> {
                                 }
                                 return null;
                               },
-                              obscureText: true,
+                              obscureText: _isInvisible,
                             ),
                             const SizedBox(
                               height: 10,
