@@ -16,6 +16,17 @@ class _SignupPageState extends State<SiignupPage>{
   String _confirmPasswrod='';
   String _role='student';
 
+  bool _isInvisiblePassword=true;
+  void _changeInvisibilityState(){
+    setState(() {
+      _isInvisiblePassword =!_isInvisiblePassword;
+    });
+  }
+  bool _isInvisibleConfirmPassword=true;
+  void _changeConfirmVisibility(){
+    _isInvisibleConfirmPassword=!_isInvisibleConfirmPassword;
+  }
+
   bool _validateRole(String username) {
     if (username == 'admin') return false;
     if (username.length == 9 && RegExp(r'^\d+$').hasMatch(username)) {
@@ -95,10 +106,11 @@ class _SignupPageState extends State<SiignupPage>{
                               decoration:  InputDecoration(
                                 suffixIcon: IconButton(onPressed: (){
                                   setState(() {
+                                    _changeInvisibilityState();
                                   });
                                 },
-                                  icon: const Icon(
-                                      CupertinoIcons.eye_fill
+                                  icon: Icon(
+                                      _isInvisiblePassword ? Icons.visibility : Icons.visibility_off,
                                   ),
                                 ),
                                 hintText: 'Password',
@@ -126,17 +138,21 @@ class _SignupPageState extends State<SiignupPage>{
                                 }
                                 return null;
                               },
-                              obscureText: true,
+                              obscureText: _isInvisiblePassword,
                             ),
                             const SizedBox(
                               height: 10,
                             ),
                             TextFormField(
-                              obscureText: true,
+                              obscureText: _isInvisiblePassword,
                               decoration: InputDecoration(
                                 hintText: 'Confirm Password',
-                                suffixIcon: IconButton(onPressed: (){},
-                                    icon: const Icon(CupertinoIcons.eye_fill)),
+                                suffixIcon: IconButton(onPressed: (){
+                                  setState(() {
+                                    _changeInvisibilityState();
+                                  });
+                                },
+                                    icon: Icon(_isInvisiblePassword? Icons.visibility : Icons.visibility_off)),
                                 contentPadding: const EdgeInsets.all(20),
                                 enabledBorder: const OutlineInputBorder(
                                   borderSide: BorderSide(
