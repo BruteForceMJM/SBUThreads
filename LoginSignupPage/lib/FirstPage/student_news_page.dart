@@ -9,15 +9,15 @@ class StudentNewsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(CupertinoIcons.search, color: Colors.blue),
+          icon: const Icon(CupertinoIcons.search, color: Colors.blue),
           onPressed: () {},
         ),
-        title: Text('رویدادها و اخبار'),
+        title: const Text('رویدادها و اخبار'),
         backgroundColor: Colors.blue,
         centerTitle: true,
-        actions: [
+        actions: const [
           Padding(
-            padding: const EdgeInsets.only(right: 16.0),
+            padding: EdgeInsets.only(right: 16.0),
             child: Center(
               child: Text(
                 'ترم بهار 1403',
@@ -32,7 +32,7 @@ class StudentNewsPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
@@ -45,22 +45,22 @@ class StudentNewsPage extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 10),
-            Text(
+            const SizedBox(height: 10),
+            const Text(
               'امروز (16 اردیبهشت)',
               style: TextStyle(fontSize: 16, color: Colors.black54),
             ),
-            Divider(),
+            const Divider(),
             Expanded(
               child: ListView(
                 children: [
                   _buildNewsCard(context, 'اطلاعیه آموزشی', 'قابل توجه دانشجویان دکترا ورودی 98 امکان حذف یک نیمسال بدون احتساب در سنوات...', 'images/university.jpg'),
-                  SizedBox(height: 10),
-                  Text(
+                  const SizedBox(height: 10),
+                  const Text(
                     'دیروز (15 اردیبهشت)',
                     style: TextStyle(fontSize: 16, color: Colors.black54),
                   ),
-                  Divider(),
+                  const Divider(),
                   _buildNewsCard(context, 'اطلاعیه آموزشی', 'قابل توجه دانشجویان دکترا ورودی 98 امکان حذف یک نیمسال بدون احتساب در سنوات...', 'images/university.jpg'),
                   _buildNewsCard(context, 'اطلاعیه آموزشی', 'قابل توجه دانشجویان دکترا ورودی 98 امکان حذف یک نیمسال بدون احتساب در سنوات...', 'images/university.jpg'),
                 ],
@@ -132,17 +132,17 @@ class StudentNewsPage extends StatelessWidget {
                     children: <Widget>[
                       Text(
                         title,
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Text(
                         content,
-                        style: TextStyle(fontSize: 14, color: Colors.white),
+                        style: const TextStyle(fontSize: 14, color: Colors.white),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       GestureDetector(
                         onTap: () {},
-                        child: Text(
+                        child: const Text(
                           'مطالعه بیشتر...',
                           style: TextStyle(fontSize: 14, color: Colors.white, decoration: TextDecoration.underline),
                         ),
