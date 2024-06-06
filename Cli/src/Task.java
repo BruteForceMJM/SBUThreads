@@ -1,3 +1,5 @@
+package Cli.src;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
@@ -7,6 +9,10 @@ public class Task {
     protected String id;
     protected LocalDateTime deadline;
     protected boolean isAvailable;
+
+    public Task(String id) {
+        this.id = id;
+    }
 
     public Task(String id, int days, int hours, int minutes) {
         this(id, days, hours);

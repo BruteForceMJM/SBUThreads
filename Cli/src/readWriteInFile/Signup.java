@@ -1,4 +1,4 @@
-package readWriteInFile;
+package Cli.src.readWriteInFile;
 
 import java.io.BufferedWriter;
 import java.io.File;

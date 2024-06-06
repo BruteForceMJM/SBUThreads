@@ -1,3 +1,5 @@
+package Cli.src;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -56,21 +58,30 @@ class StudentData {
 
 public class Course {
     private final HashSet<StudentData> studentsData = new HashSet<>();
+    private final String id;
     private final LinkedList<Task> tasks = new LinkedList<>();
-    private final Semester semester;
+    private Semester semester;
     private String courseName;
     private Professor professor;
     private int unitsNum;
     private boolean isAvailable;
     private LocalDateTime examDate;
 
-    public Course(String courseName, Professor professor, Semester semester, int unitsNum) {
+    public Course(String id) {
+        this.id = id;
+    }
+
+    public Course(String id, String courseName, Professor professor, Semester semester, int unitsNum) {
+        this.id = id;
         this.courseName = courseName;
         this.professor = professor;
         this.semester = semester;
         this.unitsNum = unitsNum;
     }
 
+    public String getId() {
+        return id;
+    }
 
     @Override
     public boolean equals(Object o) {

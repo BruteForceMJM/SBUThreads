@@ -1,11 +1,18 @@
+package Cli.src;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Professor {
-    private final String firstName;
-    private final String lastName;
+    private String firstName;
+    private String lastName;
     private final String id;
     private final List<Course> courses = new ArrayList<>();
+
+    public Professor(String id) {
+        this.id = id;
+    }
 
     public Professor(String firstName, String lastName, String id) {
         this.firstName = firstName;
@@ -66,5 +73,25 @@ public class Professor {
         courses.add(course);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Professor professor = (Professor) o;
+        return Objects.equals(id, professor.id);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
+
+    public void removeCourse(Course course) throws Exception {
+        if (!courses.contains(course)) {
+            throw new CourseNotFoundException();
+        } else if (!course.getProfessor().equals(this)) {
+            throw new IllegalActionException();
+        }
+        courses.remove(course);
+    }
 }

@@ -1,4 +1,4 @@
-package info;
+package Cli.src.info;
 
 public class ProfessorInfo {
     public String professorFirst;

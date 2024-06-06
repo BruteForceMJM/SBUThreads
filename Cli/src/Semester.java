@@ -1,3 +1,5 @@
+package Cli.src;
+
 public enum Semester {
     ONE,
     TWO,

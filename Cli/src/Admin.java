@@ -1,3 +1,5 @@
+package Cli.src;
+
 public class Admin {
     private final String firstName;
     private final String lastName;
@@ -32,5 +34,9 @@ public class Admin {
 
     public void addProfessor(Course course, Professor professor) throws Exception {
         professor.addCourse(course);
+    }
+
+    public void removeProfessor(Course course, Professor professor) throws Exception {
+        professor.removeCourse(course);
     }
 }

@@ -1,3 +1,5 @@
+package Cli.src;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -7,11 +9,14 @@ import java.util.stream.Collectors;
 
 public class Student {
     private final List<Course> courses = new ArrayList<>();
-    private final String name;
+    private String name;
     private final String ID;
     private List<Course> currentCourses = new ArrayList<>();
     private Semester currentSemester = Semester.ONE;
 
+    public Student(String ID) {
+        this.ID = ID;
+    }
 
     public Student(String name, String ID) {
         this.name = name;
