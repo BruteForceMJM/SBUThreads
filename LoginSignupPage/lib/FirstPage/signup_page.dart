@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:login_signup_page/FirstPage/student_page.dart';
+import 'package:login_signup_page/FirstPage/tacher_page.dart';
 
 import 'Pallete.dart';
 import 'login_screen.dart';
@@ -43,9 +45,9 @@ class _SignupPageState extends State<SiignupPage>{
   void _signup() {
     if (_formKey.currentState!.validate()) {
       if (_role == 'student') {
-        Navigator.pushNamed(context, '/student');
+        Navigator.push(context, MaterialPageRoute(builder: (context) =>const StudentPage()));
       } else if (_role == 'teacher') {
-        Navigator.pushNamed(context, '/teacher');
+        Navigator.push(context,MaterialPageRoute(builder: (context) => TeacherPage()));
       }
     }
   }
@@ -166,6 +168,13 @@ class _SignupPageState extends State<SiignupPage>{
                                   ),
                                 ),
                               ),
+                              onChanged: (value) => _confirmPasswrod=value,
+                              validator: (value) {
+                                if(_confirmPasswrod != _password){
+                                  return 'رمز عبور ها یکسان نیستند';
+                                }
+                                return null;
+                              },
                             ),
 
                             const SizedBox(

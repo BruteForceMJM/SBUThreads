@@ -30,13 +30,12 @@ class NextButton extends StatelessWidget {
         Navigator.push(context,
             MaterialPageRoute(builder: (context)=>const LoginPage()));
       }
-
     },
       style: TextButton.styleFrom(
           padding: EdgeInsets.symmetric(vertical: 30 , horizontal: horizontalPadding),
           shape:  RoundedRectangleBorder(
             side: const BorderSide(
-                color: Pallete.borderColor,
+                color: Pallete.gradient1,
                 width: 5
             ),
             borderRadius: BorderRadius.circular(30),
