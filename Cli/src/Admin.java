@@ -1,9 +1,13 @@
 package Cli.src;
 
 public class Admin {
-    private final String firstName;
-    private final String lastName;
-    private final String id;
+    private String firstName;
+    private String lastName;
+    private String id;
+
+
+    public Admin() {
+    }
 
     public Admin(String firstName, String lastName, String id) {
         this.firstName = firstName;
@@ -38,5 +42,14 @@ public class Admin {
 
     public void removeProfessor(Course course, Professor professor) throws Exception {
         professor.removeCourse(course);
+    }
+
+    @Override
+    public String toString() {
+        return "Admin{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", id='" + id + '\'' +
+                '}';
     }
 }

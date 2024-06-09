@@ -1,8 +1,16 @@
 package Cli.src;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.Console;
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class Cli {
@@ -15,14 +23,14 @@ public class Cli {
         Thread.sleep(1000);
         clearScreen();
         System.out.println("Pick up Your Role");
-        String choice = console.readLine("1-Admin 2-Professor: ");
+        String choice = console.readLine("1-Admin 2-Professor 3-Student: ");
 
         boolean validNumber = false;
         int userChosenNumber;
         while (!validNumber) {
             try {
                 userChosenNumber = Integer.parseInt(choice);
-                if (userChosenNumber < 1 || userChosenNumber > 2) {
+                if (userChosenNumber < 1 || userChosenNumber > 3) {
                     throw new illegalNumberException();
                 }
                 validNumber = true;
@@ -31,6 +39,8 @@ public class Cli {
             }
         }
         boolean isAdmin = choice.equals("1");
+        boolean isProfessor = choice.equals("2");
+        boolean isStudent = choice.equals("3");
         Thread.sleep(1000);
         clearScreen();
         if (isAdmin) {
@@ -60,16 +70,43 @@ public class Cli {
                 case 5:
                     adminCreateCourse();
             }
-        }
-        if (!isAdmin) {
+        } else if (isProfessor) {
             Thread.sleep(1000);
             clearScreen();
             System.out.println("Please Choose One Option");
             professorFlow();
+        } else if (isStudent) {
+            Thread.sleep(1000);
+            clearScreen();
+            System.out.println("Please Choose One Option");
+            studentFlow();
         }
     }
 
+    private static void studentFlow() throws Exception {
+        int chosenNumber = signupLoginChoice();
+        if (chosenNumber == 1) {
+            userSignup(Role.Student);
+        } else {
+            String studentID = userLogin(Role.Student);
+            studentChooseAction(studentID);
+        }
+    }
+
+    private static void studentChooseAction(String studentID) {
+    }
+
     private static void professorFlow() throws Exception {
+        int chosenNumber = signupLoginChoice();
+        if (chosenNumber == 1) {
+            userSignup(Role.Professor);
+        } else {
+            String professorID = userLogin(Role.Professor);
+            professorChooseAction(professorID);
+        }
+    }
+
+    private static int signupLoginChoice() {
         boolean validChosenNumber = false;
         int chosenNumber = Integer.parseInt(console.readLine("1-Signup  2-Login: "));
         while (!validChosenNumber) {
@@ -82,12 +119,7 @@ public class Cli {
                 chosenNumber = Integer.parseInt(console.readLine("Enter Valid Number: "));
             }
         }
-        if (chosenNumber == 1) {
-            professorSignup();
-        } else {
-            String professorID = professorLogin();
-            professorChooseAction(professorID);
-        }
+        return chosenNumber;
     }
 
     private static void clearScreen() {
@@ -170,27 +202,29 @@ public class Cli {
         }
     }
 
-    private static void professorSignup() throws IOException {
+    private static void userSignup(Role role) throws IOException {
         clearScreen();
-        String professorFirstName = console.readLine("Enter Your FirstName: ");
-        String professorLastName = console.readLine("Enter Your LastName: ");
-        String professorId = console.readLine("Enter Your ID: ");
+        String userFirstName = console.readLine("Enter Your FirstName: ");
+        String userLastName = console.readLine("Enter Your LastName: ");
+        String userID = console.readLine("Enter Your ID: ");
         boolean validId = false;
         while (!validId) {
             try {
-                if (!Pattern.matches("[0-9]{9}", professorId)) {
+                if (!Pattern.matches("[0-9]{9}", userID)) {
                     throw new RuntimeException();
                 }
-
-                // TODO : checking if id is unique
-
+                if (!checkIfUnique(userID)) {
+                    throw new IllegalActionException();
+                }
                 validId = true;
             } catch (RuntimeException e) {
                 System.out.println("Your ID Must Contain Numbers Only");
-                professorId = console.readLine("Please Enter a Valid ID: ");
+                userID = console.readLine("Please Enter a Valid ID: ");
+            } catch (IllegalActionException e) {
+                System.out.println("Your ID Must be Unique!!");
+                userID = console.readLine("Please Enter a Valid ID: ");
             }
         }
-
         System.out.print("Enter your password: ");
         String professorPassword = console.readLine("Enter your password: ");
         boolean validPassword = false;
@@ -219,11 +253,43 @@ public class Cli {
                 console.readLine("Confirm Your Password: ");
             }
         }
-
-        // TODO : saving professor information in file
+        if (role == Role.Student) {
+            Student student = new Student(userID, userFirstName, userLastName);
+            ObjectMapper mapper = new ObjectMapper();
+            File file = new File("Students.json");
+            List<Student> students = mapper.readValue(file, new TypeReference<>() {
+            });
+            students.add(student);
+            mapper.writerWithDefaultPrettyPrinter().writeValue(file, students);
+        } else if (role == Role.Professor) {
+            Professor professor = new Professor(userFirstName, userLastName, userID);
+            ObjectMapper mapper = new ObjectMapper();
+            File file = new File("Professors.json");
+            List<Professor> professors = mapper.readValue(file, new TypeReference<>() {
+            });
+            professors.add(professor);
+            mapper.writerWithDefaultPrettyPrinter().writeValue(file, professors);
+        }
     }
 
-    private static String professorLogin() throws Exception {
+    private static boolean checkIfUnique(String id) {
+        File file = new File("Students.json");
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode node = mapper.readTree(file);
+            Iterator<String> iterator = node.fieldNames();
+            while (iterator.hasNext()) {
+                if (Objects.equals(iterator.next(), id)) {
+                    return false;
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return true;
+    }
+
+    private static String userLogin(Role role) throws Exception {
         clearScreen();
         boolean validUsername = false;
         String professorId = console.readLine("Enter Your ID Please: ");

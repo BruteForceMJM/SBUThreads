@@ -1,16 +1,24 @@
 package Cli.src;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+
 public class Student {
     private final List<Course> courses = new ArrayList<>();
-    private String name;
     private final String ID;
+    private String firstName;
+    private String LastName;
     private List<Course> currentCourses = new ArrayList<>();
     private Semester currentSemester = Semester.ONE;
 
@@ -18,9 +26,31 @@ public class Student {
         this.ID = ID;
     }
 
-    public Student(String name, String ID) {
-        this.name = name;
+    public Student(String ID, String firstName, String lastName) {
         this.ID = ID;
+        this.firstName = firstName;
+        LastName = lastName;
+    }
+
+    public static void main(String[] args) throws Exception {
+//        Student student = new Student("Ali Alavi", "402243068");
+//        student.addCurrentCourse(new Course("12345"));
+        Admin admin = new Admin("Ali", "Alavi", "12345");
+        Admin admin2 = new Admin("Mohammad", "Taghavi", "0987");
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonString = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(admin);
+        System.out.println(jsonString);
+        JsonNode node = objectMapper.readTree(jsonString);
+        Iterator<String> iterator = node.fieldNames();
+        System.out.println(iterator.next());
+
+        ObjectMapper mapper = new ObjectMapper();
+        File file = new File("admin");
+        List<Admin> admins = mapper.readValue(file, new TypeReference<>() {
+        });
+        admins.add(admin2);
+        mapper.writerWithDefaultPrettyPrinter().writeValue(file, admins);
+
     }
 
     public List<Course> getCourses() {
@@ -48,8 +78,12 @@ public class Student {
         this.currentSemester = currentSemester;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return LastName;
     }
 
     public int getCourseNum() {
@@ -85,7 +119,8 @@ public class Student {
     @Override
     public String toString() {
         return "Student{" +
-                "name='" + name + '\'' +
+                "LastName='" + LastName + '\'' +
+                ", firstName='" + firstName + '\'' +
                 ", ID='" + ID + '\'' +
                 '}';
     }
