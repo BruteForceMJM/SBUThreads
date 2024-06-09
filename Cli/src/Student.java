@@ -127,7 +127,7 @@ public class Student {
 
     public double getTotalAverage() throws NoCoursesAvailableException {
         if (courses.isEmpty()) {
-            throw new NoCoursesAvailableException();
+            return 0;
         }
         AtomicReference<Double> totalAverage = new AtomicReference<>(0D);
         courses.stream()
@@ -144,7 +144,7 @@ public class Student {
 
     public double getGPAOfCurrentSemester() throws Exception {
         if (currentCourses.isEmpty()) {
-            throw new NoCoursesAvailableException();
+            return 0;
         }
         updateCurrentCourses();
         AtomicReference<Double> GPAOfCurrentSemester = new AtomicReference<>(0D);
