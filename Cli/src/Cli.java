@@ -1,16 +1,13 @@
 package Cli.src;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.Console;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class Cli {
@@ -213,12 +210,12 @@ public class Cli {
                 if (!Pattern.matches("[0-9]{9}", userID)) {
                     throw new RuntimeException();
                 }
-                if (!checkIfUnique(userID)) {
+                if (!checkIfUnique(userID, role)) {
                     throw new IllegalActionException();
                 }
                 validId = true;
             } catch (RuntimeException e) {
-                System.out.println("Your ID Must Contain Numbers Only");
+                System.out.println("Your ID Must Contain Numbers Only\nAlso, the Length of Your ID must be 9");
                 userID = console.readLine("Please Enter a Valid ID: ");
             } catch (IllegalActionException e) {
                 System.out.println("Your ID Must be Unique!!");
@@ -272,14 +269,19 @@ public class Cli {
         }
     }
 
-    private static boolean checkIfUnique(String id) {
-        File file = new File("Students.json");
+    private static boolean checkIfUnique(String id, Role role) {
+        File file;
+        if (role == Role.Professor) {
+            file = new File("Professors.json");
+        } else {
+            file = new File("Students.json");
+        }
         try {
             ObjectMapper mapper = new ObjectMapper();
-            JsonNode node = mapper.readTree(file);
-            Iterator<String> iterator = node.fieldNames();
-            while (iterator.hasNext()) {
-                if (Objects.equals(iterator.next(), id)) {
+            List<Professor> professors = mapper.readValue(file, new TypeReference<>() {
+            });
+            for (Professor professor : professors) {
+                if (professor.getId().equals(id)) {
                     return false;
                 }
             }
