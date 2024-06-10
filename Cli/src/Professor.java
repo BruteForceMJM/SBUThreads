@@ -1,11 +1,16 @@
 package Cli.src;
 
+import lombok.AllArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class Professor extends Person {
     private final List<Course> courses = new ArrayList<>();
+
+    public Professor() {
+    }
 
     public Professor(String id) {
         super(id);
@@ -17,10 +22,6 @@ public class Professor extends Person {
 
     public List<Course> getCourses() {
         return courses;
-    }
-
-    public int getCoursesNum() {
-        return courses.size();
     }
 
     public void scoreStudent(Course course, Student student, Double score) throws Exception {

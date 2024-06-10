@@ -1,12 +1,11 @@
 package Cli.src;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -19,6 +18,9 @@ public class Student extends Person {
     private List<Course> currentCourses = new ArrayList<>();
     private Semester currentSemester = Semester.ONE;
 
+    public Student() {
+    }
+
     public Student(String ID) {
         super(ID);
     }
@@ -30,22 +32,38 @@ public class Student extends Person {
     public static void main(String[] args) throws Exception {
 //        Student student = new Student("Ali Alavi", "402243068");
 //        student.addCurrentCourse(new Course("12345"));
-        Admin admin = new Admin("Ali", "Alavi", "12345");
-        Admin admin2 = new Admin("Mohammad", "Taghavi", "0987");
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonString = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(admin);
-        System.out.println(jsonString);
-        JsonNode node = objectMapper.readTree(jsonString);
-        Iterator<String> iterator = node.fieldNames();
-        System.out.println(iterator.next());
+//        Admin admin = new Admin("Ali", "Alavi", "12345");
+//        Admin admin2 = new Admin("Mohammad", "Taghavi", "0987");
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        String jsonString = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(admin);
+//        System.out.println(jsonString);
+//        JsonNode node = objectMapper.readTree(jsonString);
+//        Iterator<String> iterator = node.fieldNames();
+//        System.out.println(iterator.next());
+//
+//        ObjectMapper mapper = new ObjectMapper();
+//        File file = new File("admin");
+//        List<Admin> admins = mapper.readValue(file, new TypeReference<>() {
+//        });
+//        admins.add(admin2);
+//        mapper.writerWithDefaultPrettyPrinter().writeValue(file, admins);
+//        JsonFactory jsonFactory = new JsonFactory();
+//        JsonParser parser = jsonFactory.createParser(new File("Students.json"));
+//        while (parser.nextToken() != JsonToken.END_OBJECT) {
+//            if (parser.currentToken() == JsonToken.FIELD_NAME) {
+//                parser.nextToken();
+//                System.out.println(parser.getCurrentToken().name());
+//            }
+////            System.out.println("Product Variations: "+parser.getText());
+//        }
 
         ObjectMapper mapper = new ObjectMapper();
-        File file = new File("admin");
-        List<Admin> admins = mapper.readValue(file, new TypeReference<>() {
+        File file = new File("Students.json");
+        List<Student> students = mapper.readValue(file, new TypeReference<>() {
         });
-        admins.add(admin2);
-        mapper.writerWithDefaultPrettyPrinter().writeValue(file, admins);
-
+        for (Student student : students) {
+            System.out.println(student.getID());
+        }
     }
 
     public List<Course> getCourses() {
@@ -73,17 +91,8 @@ public class Student extends Person {
         this.currentSemester = currentSemester;
     }
 
-    public int getCourseNum() {
-        return courses.size();
-    }
 
-    public int getCurrentCoursesNum() {
-        updateCurrentCourses();
-        return currentCourses.size();
-    }
-
-
-    public int getAdoptedUnitsNum() {
+    public int showAdoptedUnitsNum() {
         updateCurrentCourses();
         AtomicInteger adoptedUnitsNum = new AtomicInteger(0);
         currentCourses.stream()
@@ -92,7 +101,7 @@ public class Student extends Person {
         return adoptedUnitsNum.get();
     }
 
-    public int getTotalUnitsNum() {
+    public int showTotalUnitsNum() {
         AtomicInteger totalUnitsNum = new AtomicInteger(0);
         courses.stream()
                 .parallel()
@@ -100,16 +109,7 @@ public class Student extends Person {
         return totalUnitsNum.get();
     }
 
-    @Override
-    public String toString() {
-        return "Student{" +
-                "LastName='" + getLastName() + '\'' +
-                ", firstName='" + getFirstName() + '\'' +
-                ", ID='" + getID() + '\'' +
-                '}';
-    }
-
-    public double getTotalAverage() throws NoCoursesAvailableException {
+    public double showTotalAverage() throws NoCoursesAvailableException {
         if (courses.isEmpty()) {
             return 0;
         }
@@ -123,10 +123,10 @@ public class Student extends Person {
                         throw new RuntimeException(e);
                     }
                 }));
-        return totalAverage.get() / getTotalUnitsNum();
+        return totalAverage.get() / showTotalUnitsNum();
     }
 
-    public double getGPAOfCurrentSemester() throws Exception {
+    public double showGPAOfCurrentSemester() throws Exception {
         if (currentCourses.isEmpty()) {
             return 0;
         }
@@ -141,7 +141,7 @@ public class Student extends Person {
                         throw new RuntimeException(e);
                     }
                 }));
-        return GPAOfCurrentSemester.get() / getAdoptedUnitsNum();
+        return GPAOfCurrentSemester.get() / showAdoptedUnitsNum();
     }
 
     @Override

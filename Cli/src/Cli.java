@@ -222,7 +222,6 @@ public class Cli {
                 userID = console.readLine("Please Enter a Valid ID: ");
             }
         }
-        System.err.print("Enter your password: ");
         String userPassword = console.readLine("Enter your password: ");
         boolean validPassword = false;
         while (!validPassword) {
@@ -270,19 +269,26 @@ public class Cli {
     }
 
     private static boolean checkIfUnique(String id, Role role) {
-        File file;
-        if (role == Role.Professor) {
-            file = new File("Professors.json");
-        } else {
-            file = new File("Students.json");
-        }
         try {
+            File file;
             ObjectMapper mapper = new ObjectMapper();
-            List<Person> people = mapper.readValue(file, new TypeReference<>() {
-            });
-            for (Person person : people) {
-                if (person.getID().equals(id)) {
-                    return false;
+            if (role == Role.Professor) {
+                file = new File("Professors.json");
+                List<Professor> professors = mapper.readValue(file, new TypeReference<>() {
+                });
+                for (Professor professor : professors) {
+                    if (professor.getID().equals(id)) {
+                        return false;
+                    }
+                }
+            } else if (role == Role.Student) {
+                file = new File("Students.json");
+                List<Student> students = mapper.readValue(file, new TypeReference<>() {
+                });
+                for (Student student : students) {
+                    if (student.getID().equals(id)) {
+                        return false;
+                    }
                 }
             }
         } catch (IOException e) {

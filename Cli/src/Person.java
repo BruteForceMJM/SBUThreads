@@ -6,6 +6,10 @@ public class Person {
     private String firstName;
     private String LastName;
 
+    public Person() {
+
+    }
+
     public Person(String ID) {
         this.ID = ID;
     }
@@ -47,5 +51,14 @@ public class Person {
 
     public void setLastName(String lastName) {
         LastName = lastName;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "LastName='" + getLastName() + '\'' +
+                ", firstName='" + getFirstName() + '\'' +
+                ", ID='" + getID() + '\'' +
+                '}';
     }
 }
