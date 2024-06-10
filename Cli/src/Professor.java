@@ -15,6 +15,10 @@ public class Professor extends Person {
         super(id, password, firstName, lastName);
     }
 
+    public List<Course> getCourses() {
+        return courses;
+    }
+
     public int getCoursesNum() {
         return courses.size();
     }

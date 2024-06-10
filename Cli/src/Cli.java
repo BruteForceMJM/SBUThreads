@@ -223,17 +223,17 @@ public class Cli {
             }
         }
         System.err.print("Enter your password: ");
-        String professorPassword = console.readLine("Enter your password: ");
+        String userPassword = console.readLine("Enter your password: ");
         boolean validPassword = false;
         while (!validPassword) {
             try {
-                if (!Pattern.matches("^(?=.*[#$@!%&*?])(?=.*\\d)[A-Za-z\\d#$@!%&*?]{8,}$", professorPassword)) {
+                if (!Pattern.matches("^(?=.*[#$@!%&*?])(?=.*\\d)[A-Za-z\\d#$@!%&*?]{8,}$", userPassword)) {
                     throw new RuntimeException();
                 }
                 validPassword = true;
             } catch (RuntimeException e) {
                 System.out.println("Your Password isn't Strong Enough");
-                professorPassword = console.readLine("Please Choose a Strong Password: ");
+                userPassword = console.readLine("Please Choose a Strong Password: ");
             }
         }
 
@@ -241,7 +241,7 @@ public class Cli {
         boolean isSame = false;
         while (!isSame) {
             try {
-                if (!professorConfirmPassword.equals(professorPassword)) {
+                if (!professorConfirmPassword.equals(userPassword)) {
                     throw new RuntimeException();
                 }
                 isSame = true;
@@ -251,7 +251,7 @@ public class Cli {
             }
         }
         if (role == Role.Student) {
-            Student student = new Student(userID, userFirstName, userLastName);
+            Student student = new Student(userID, userPassword, userFirstName, userLastName);
             ObjectMapper mapper = new ObjectMapper();
             File file = new File("Students.json");
             List<Student> students = mapper.readValue(file, new TypeReference<>() {
@@ -259,7 +259,7 @@ public class Cli {
             students.add(student);
             mapper.writerWithDefaultPrettyPrinter().writeValue(file, students);
         } else if (role == Role.Professor) {
-            Professor professor = new Professor(userFirstName, userLastName, userID);
+            Professor professor = new Professor(userID, userPassword, userFirstName, userLastName);
             ObjectMapper mapper = new ObjectMapper();
             File file = new File("Professors.json");
             List<Professor> professors = mapper.readValue(file, new TypeReference<>() {
@@ -278,10 +278,10 @@ public class Cli {
         }
         try {
             ObjectMapper mapper = new ObjectMapper();
-            List<Professor> professors = mapper.readValue(file, new TypeReference<>() {
+            List<Person> people = mapper.readValue(file, new TypeReference<>() {
             });
-            for (Professor professor : professors) {
-                if (professor.getId().equals(id)) {
+            for (Person person : people) {
+                if (person.getID().equals(id)) {
                     return false;
                 }
             }
