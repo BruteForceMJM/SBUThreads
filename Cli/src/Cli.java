@@ -75,7 +75,7 @@ public class Cli {
         } else if (isStudent) {
             Thread.sleep(1000);
             clearScreen();
-            System.out.println("Please Choose One Option");
+            System.err.println("Please Choose One Option");
             studentFlow();
         }
     }
@@ -215,14 +215,14 @@ public class Cli {
                 }
                 validId = true;
             } catch (RuntimeException e) {
-                System.out.println("Your ID Must Contain Numbers Only\nAlso, the Length of Your ID must be 9");
+                System.err.println("Your ID Must Contain Numbers Only\nAlso, the Length of Your ID must be 9");
                 userID = console.readLine("Please Enter a Valid ID: ");
             } catch (IllegalActionException e) {
-                System.out.println("Your ID Must be Unique!!");
+                System.err.println("Your ID Must be Unique!!");
                 userID = console.readLine("Please Enter a Valid ID: ");
             }
         }
-        System.out.print("Enter your password: ");
+        System.err.print("Enter your password: ");
         String professorPassword = console.readLine("Enter your password: ");
         boolean validPassword = false;
         while (!validPassword) {

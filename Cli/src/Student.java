@@ -14,22 +14,17 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 
-public class Student {
+public class Student extends Person {
     private final List<Course> courses = new ArrayList<>();
-    private final String ID;
-    private String firstName;
-    private String LastName;
     private List<Course> currentCourses = new ArrayList<>();
     private Semester currentSemester = Semester.ONE;
 
     public Student(String ID) {
-        this.ID = ID;
+        super(ID);
     }
 
-    public Student(String ID, String firstName, String lastName) {
-        this.ID = ID;
-        this.firstName = firstName;
-        LastName = lastName;
+    public Student(String ID, String password, String firstName, String lastName) {
+        super(ID, password, firstName, lastName);
     }
 
     public static void main(String[] args) throws Exception {
@@ -78,14 +73,6 @@ public class Student {
         this.currentSemester = currentSemester;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return LastName;
-    }
-
     public int getCourseNum() {
         return courses.size();
     }
@@ -95,9 +82,6 @@ public class Student {
         return currentCourses.size();
     }
 
-    public String getID() {
-        return ID;
-    }
 
     public int getAdoptedUnitsNum() {
         updateCurrentCourses();
@@ -119,9 +103,9 @@ public class Student {
     @Override
     public String toString() {
         return "Student{" +
-                "LastName='" + LastName + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", ID='" + ID + '\'' +
+                "LastName='" + getLastName() + '\'' +
+                ", firstName='" + getFirstName() + '\'' +
+                ", ID='" + getID() + '\'' +
                 '}';
     }
 
@@ -165,12 +149,12 @@ public class Student {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Student student = (Student) o;
-        return Objects.equals(ID, student.ID);
+        return Objects.equals(getID(), student.getID());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ID);
+        return Objects.hash(getID());
     }
 
     public void addCurrentCourse(Course course) throws Exception {

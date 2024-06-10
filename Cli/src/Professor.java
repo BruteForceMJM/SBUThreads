@@ -4,32 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Professor {
-    private String firstName;
-    private String lastName;
-    private final String id;
+public class Professor extends Person {
     private final List<Course> courses = new ArrayList<>();
 
     public Professor(String id) {
-        this.id = id;
+        super(id);
     }
 
-    public Professor(String firstName, String lastName, String id) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getId() {
-        return id;
+    public Professor(String id, String password, String firstName, String lastName) {
+        super(id, password, firstName, lastName);
     }
 
     public int getCoursesNum() {
@@ -78,12 +61,12 @@ public class Professor {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Professor professor = (Professor) o;
-        return Objects.equals(id, professor.id);
+        return Objects.equals(getID(), professor.getID());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getID());
     }
 
     public void removeCourse(Course course) throws Exception {
