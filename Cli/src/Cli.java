@@ -14,6 +14,7 @@ public class Cli {
 
     private static final Admin admin = new Admin("admin", "admin", "admin");
     private static final Console console = System.console();
+    private static final ObjectMapper mapper = new ObjectMapper();
 
     public static void main(String[] args) throws Exception {
         System.out.println("Welcome to SBUThreads!!");
@@ -70,7 +71,7 @@ public class Cli {
         } else if (isProfessor) {
             Thread.sleep(1000);
             clearScreen();
-            System.out.println("Please Choose One Option");
+            System.err.println("Please Choose One Option");
             professorFlow();
         } else if (isStudent) {
             Thread.sleep(1000);
@@ -85,8 +86,7 @@ public class Cli {
         if (chosenNumber == 1) {
             userSignup(Role.Student);
         } else {
-            String studentID = userLogin(Role.Student);
-            studentChooseAction(studentID);
+            userLogin(Role.Student);
         }
     }
 
@@ -98,8 +98,7 @@ public class Cli {
         if (chosenNumber == 1) {
             userSignup(Role.Professor);
         } else {
-            String professorID = userLogin(Role.Professor);
-            professorChooseAction(professorID);
+            userLogin(Role.Professor);
         }
     }
 
@@ -251,7 +250,6 @@ public class Cli {
         }
         if (role == Role.Student) {
             Student student = new Student(userID, userPassword, userFirstName, userLastName);
-            ObjectMapper mapper = new ObjectMapper();
             File file = new File("Students.json");
             List<Student> students = mapper.readValue(file, new TypeReference<>() {
             });
@@ -259,19 +257,18 @@ public class Cli {
             mapper.writerWithDefaultPrettyPrinter().writeValue(file, students);
         } else if (role == Role.Professor) {
             Professor professor = new Professor(userID, userPassword, userFirstName, userLastName);
-            ObjectMapper mapper = new ObjectMapper();
             File file = new File("Professors.json");
             List<Professor> professors = mapper.readValue(file, new TypeReference<>() {
             });
             professors.add(professor);
             mapper.writerWithDefaultPrettyPrinter().writeValue(file, professors);
         }
+        System.out.println("You Signed up Successfully!!");
     }
 
     private static boolean checkIfUnique(String id, Role role) {
         try {
             File file;
-            ObjectMapper mapper = new ObjectMapper();
             if (role == Role.Professor) {
                 file = new File("Professors.json");
                 List<Professor> professors = mapper.readValue(file, new TypeReference<>() {
@@ -297,38 +294,59 @@ public class Cli {
         return true;
     }
 
-    private static String userLogin(Role role) throws Exception {
+    private static void userLogin(Role role) throws Exception {
         clearScreen();
-        boolean validUsername = false;
-        String professorId = console.readLine("Enter Your ID Please: ");
-        while (!validUsername) {
+        String userId = console.readLine("Enter Your ID Please: ");
+        String userPassword = console.readLine("Enter Your Password Please: ");
+        boolean validLogin = false;
+        while (!validLogin) {
             try {
-                if (!Pattern.matches("[0-9]{9}", professorId)) {
-                    throw new RuntimeException();
+                if (!checkUserAndPassword(userId, userPassword, role)) {
+                    throw new IllegalActionException();
                 }
-                validUsername = true;
-            } catch (RuntimeException e) {
-                System.out.println("Your ID is Invalid!!");
-                professorId = console.readLine("Please Enter a Valid ID: ");
+                validLogin = true;
+            } catch (IllegalActionException e) {
+                System.err.println("Your ID or Password is Invalid!!");
+                userId = console.readLine("Enter Your ID Please: ");
+                userPassword = console.readLine("Enter Your Password Please: ");
             }
         }
-        boolean validPassword = false;
-        String professorPassword = console.readLine("Enter Your Password Please: ");
-        while (!validPassword) {
-            try {
-                if (professorPassword.length() < 8) {
-                    throw new RuntimeException();
-                }
-                validPassword = true;
-            } catch (RuntimeException e) {
-                System.out.println("Your Password Must Be AtLeast 8 Characters!!");
-                professorPassword = console.readLine("Please Enter a Valid Password: ");
-            }
+        System.err.println("You Logged in Successfully:)");
+        if (role == Role.Student) {
+            studentChooseAction(userId);
+        } else if (role == Role.Professor) {
+            professorChooseAction(userId);
+        } else {
+            throw new IllegalActionException();
         }
-        // TODO : checking if login is valid
-        return professorId;
     }
 
+    private static boolean checkUserAndPassword(String id, String password, Role role)
+            throws IllegalActionException, IOException {
+        File file;
+        if (role == Role.Student) {
+            file = new File("Students.json");
+            List<Student> students = mapper.readValue(file, new TypeReference<>() {
+            });
+            for (Student student : students) {
+                if (student.getID().equals(id) && student.getPassword().equals(password)) {
+                    return true;
+                }
+            }
+        } else if (role == Role.Professor) {
+            file = new File("Professors.json");
+            List<Professor> professors = mapper.readValue(file, new TypeReference<>() {
+            });
+            for (Professor professor : professors) {
+                if (professor.getID().equals(id) && professor.getPassword().equals(password)) {
+                    return true;
+                }
+            }
+        } else {
+            throw new IllegalActionException();
+        }
+        return false;
+    }
 
     private static void professorChooseAction(String professorID) throws Exception {
         System.out.println("1-Add Task");
