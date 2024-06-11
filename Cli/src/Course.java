@@ -6,9 +6,18 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 class StudentData {
-    private final Student student;
     private final HashMap<Task, Double> tasksScores = new HashMap<>();
+    private Student student;
     private double score;
+
+
+    public StudentData() {
+    }
+
+    public StudentData(Student student, double score) {
+        this.student = student;
+        this.score = score;
+    }
 
     public StudentData(Student student) {
         this.student = student;
@@ -58,14 +67,17 @@ class StudentData {
 
 public class Course {
     private final HashSet<StudentData> studentsData = new HashSet<>();
-    private final String id;
     private final LinkedList<Task> tasks = new LinkedList<>();
+    private String id;
     private Semester semester;
     private String courseName;
     private Professor professor;
     private int unitsNum;
     private boolean isAvailable;
     private LocalDateTime examDate;
+
+    public Course() {
+    }
 
     public Course(String id) {
         this.id = id;
@@ -77,6 +89,16 @@ public class Course {
         this.professor = professor;
         this.semester = semester;
         this.unitsNum = unitsNum;
+    }
+
+    public Course(String id, Semester semester, String courseName, Professor professor, int unitsNum, boolean isAvailable, LocalDateTime examDate) {
+        this.id = id;
+        this.semester = semester;
+        this.courseName = courseName;
+        this.professor = professor;
+        this.unitsNum = unitsNum;
+        this.isAvailable = isAvailable;
+        this.examDate = examDate;
     }
 
     public String getId() {
@@ -129,18 +151,12 @@ public class Course {
     }
 
     public Map<Student, Double> getStudentsGrades() throws StudentDoesNotExistException {
-        if (studentsData.isEmpty()) {
-            throw new StudentDoesNotExistException();
-        }
         return studentsData.stream()
                 .collect(Collectors
                         .toMap(StudentData::getStudent, StudentData::getScore));
     }
 
     public List<Student> getStudents() throws StudentDoesNotExistException {
-        if (studentsData.isEmpty()) {
-            throw new StudentDoesNotExistException();
-        }
         return studentsData.stream()
                 .map(StudentData::getStudent)
                 .collect(Collectors.toList());
@@ -162,6 +178,14 @@ public class Course {
         studentsData.remove(oldStudent);
     }
 
+    public HashSet<StudentData> getStudentsData() {
+        return studentsData;
+    }
+
+    public LinkedList<Task> getTasks() {
+        return tasks;
+    }
+
     public int getUnitsNum() {
         return unitsNum;
     }
@@ -170,20 +194,12 @@ public class Course {
         this.unitsNum = unitsNum;
     }
 
-    public int getStudentsNum() {
-        return studentsData.size();
-    }
-
     public boolean isAvailable() {
         return isAvailable;
     }
 
     public void setAvailable(boolean available) {
         isAvailable = available;
-    }
-
-    public int getAssignmentsNum() {
-        return tasks.size();
     }
 
     public void scoreStudent(Student student, Double score) throws StudentDoesNotExistException {

@@ -55,13 +55,15 @@ public class Student extends Person {
 //            }
 ////            System.out.println("Product Variations: "+parser.getText());
 //        }
-
+        Course course1 = new Course("12345", "Ap", new Professor("12345"), Semester.ONE, 3);
         ObjectMapper mapper = new ObjectMapper();
-        File file = new File("Students.json");
-        List<Student> students = mapper.readValue(file, new TypeReference<>() {
+        File file = new File("Courses.json");
+        List<Course> courses = mapper.readValue(file, new TypeReference<>() {
         });
-        for (Student student : students) {
-            System.out.println(student.getID());
+//        courses.add(course1);
+//        mapper.writerWithDefaultPrettyPrinter().writeValue(file, courses);
+        for (Course course: courses) {
+            System.out.println(course);
         }
     }
 

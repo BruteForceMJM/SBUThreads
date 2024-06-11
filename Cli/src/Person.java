@@ -55,7 +55,7 @@ public class Person {
 
     @Override
     public String toString() {
-        return "Student{" +
+        return "Person{" +
                 "LastName='" + getLastName() + '\'' +
                 ", firstName='" + getFirstName() + '\'' +
                 ", ID='" + getID() + '\'' +

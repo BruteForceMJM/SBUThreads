@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 public class Cli {
@@ -381,9 +383,13 @@ public class Cli {
         }
     }
 
-    private static void adminCreateCourse() throws Exception {
+    private static void adminCreateCourse() {
         System.out.println("Complete Course Information Please");
         String courseID = console.readLine("Course ID: ");
+        while (!checkCourseID(courseID)) {
+            System.err.println("ID already exists");
+            courseID = console.readLine("Enter a Valid ID Please: ");
+        }
         validateID(courseID);
         String professorID = console.readLine("Professor ID: ");
         validateID(professorID);
@@ -412,9 +418,38 @@ public class Cli {
             default -> throw new IllegalStateException("Unexpected value: " + semesterInt);
         };
         int unitNum = Integer.parseInt(console.readLine("Unit Number: "));
-        Course course = new Course(courseID, courseName, new Professor(professorID), semester, unitNum);
-        // TODO : Adding course info to file
-        System.out.println("Course Added Successfully!!");
+        File file = new File("Courses.json");
+        try {
+            Professor professor = findProfessor(professorID);
+            Course course = new Course(courseID, courseName, professor, semester, unitNum);
+            List<Course> courses = mapper.readValue(file, new TypeReference<>() {
+            });
+            courses.add(course);
+            mapper.writerWithDefaultPrettyPrinter().writeValue(file, courses);
+            System.out.println("Course Added Successfully!!");
+        } catch (NoSuchElementException e) {
+            System.err.println("There is No Professor with This ID!!");
+            adminCreateCourse();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static boolean checkCourseID(String id) {
+        File file = new File("Courses.json");
+        List<Course> courses;
+        try {
+            courses = mapper.readValue(file, new TypeReference<>() {
+            });
+            for (Course course : courses) {
+                if (course.getId().equals(id)) {
+                    return false;
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return true;
     }
 
     private static void validateID(String professorID) {
@@ -429,6 +464,16 @@ public class Cli {
                 professorID = console.readLine("Enter a Valid ID: ");
             }
         }
+    }
+
+    private static Professor findProfessor(String id) throws IOException {
+        File file = new File("Professors.json");
+        List<Professor> professors = mapper.readValue(file, new TypeReference<>() {
+        });
+        Optional<Professor> professor = professors.stream()
+                .filter(professor1 -> professor1.getID().equals(id))
+                .findAny();
+        return professor.orElseThrow();
     }
 
     private static void professorTaskAction(Situation situation) {
