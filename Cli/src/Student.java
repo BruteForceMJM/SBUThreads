@@ -62,18 +62,22 @@ public class Student extends Person {
         });
 //        courses.add(course1);
 //        mapper.writerWithDefaultPrettyPrinter().writeValue(file, courses);
-        for (Course course: courses) {
+        for (Course course : courses) {
             System.out.println(course);
         }
     }
 
-    public List<Course> getCourses() {
-        return new ArrayList<>(courses);
+    public List<String> getCourses() {
+        return courses.stream()
+                .map(Course::getId)
+                .toList();
     }
 
-    public List<Course> getCurrentCourses() {
+    public List<String> getCurrentCourses() {
         updateCurrentCourses();
-        return new ArrayList<>(currentCourses);
+        return currentCourses.stream()
+                .map(Course::getId)
+                .toList();
     }
 
     private void updateCurrentCourses() {
@@ -164,5 +168,13 @@ public class Student extends Person {
         }
         courses.add(course);
         currentCourses.add(course);
+    }
+
+    public void removeCourse(Course course) throws CourseNotFoundException {
+        if (!courses.contains(course)) {
+            throw new CourseNotFoundException();
+        }
+        courses.remove(course);
+        currentCourses.remove(course);
     }
 }

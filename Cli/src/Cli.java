@@ -170,29 +170,42 @@ public class Cli {
     }
 
     private static void adminAllActions(Situation situation, Role role) throws Exception {
-        System.out.println("Write Information About Course:");
+        System.err.println("Write Information About Course: ");
         String courseID = console.readLine("Course ID: ");
 
-        // ToDo : checking if course id is valid
+        while (!checkIfCourseExits(courseID)) {
+            System.err.println("There is No Course with this ID");
+            courseID = console.readLine("Enter a Valid ID Please: ");
+        }
 
         if (role == Role.Student) {
             String studentID = console.readLine("Student ID: ");
-            // ToDo : checking if student id is valid
+
+            while (!checkIfUserExits(studentID, Role.Student)) {
+                System.err.println("Student With This ID Does not Exists!!");
+                studentID = console.readLine("Enter a Valid ID: ");
+            }
+
             if (situation == Situation.Add) {
-                admin.addStudent(new Course(courseID), new Student(studentID));
+                admin.addStudent(courseID, studentID);
                 System.out.println("Added Successfully");
             } else if (situation == Situation.Remove) {
-                admin.removeStudent(new Course(courseID), new Student(studentID));
+                admin.removeStudent(courseID, studentID);
                 System.out.println("Removed Successfully");
             }
         } else if (role == Role.Professor) {
             String professorID = console.readLine("Professor ID: ");
-            // ToDo : checking if professor id is valid
+
+            while (!checkIfUserExits(professorID, Role.Professor)) {
+                System.err.println("Professor With This ID Does not Exists!!");
+                professorID = console.readLine("Enter a Valid ID: ");
+            }
+
             if (situation == Situation.Add) {
-                admin.addProfessor(new Course(courseID), new Professor(professorID));
+                admin.addProfessor(courseID, professorID);
                 System.out.println("Added Successfully");
             } else if (situation == Situation.Remove) {
-                admin.removeProfessor(new Course(courseID), new Professor(professorID));
+                admin.removeProfessor(courseID, professorID);
                 System.out.println("Removed Successfully");
             }
         } else {
@@ -211,7 +224,7 @@ public class Cli {
                 if (!Pattern.matches("[0-9]{9}", userID)) {
                     throw new RuntimeException();
                 }
-                if (!checkIfUnique(userID, role)) {
+                if (checkIfUserExits(userID, role)) {
                     throw new IllegalActionException();
                 }
                 validId = true;
@@ -219,7 +232,7 @@ public class Cli {
                 System.err.println("Your ID Must Contain Numbers Only\nAlso, the Length of Your ID must be 9");
                 userID = console.readLine("Please Enter a Valid ID: ");
             } catch (IllegalActionException e) {
-                System.err.println("Your ID Must be Unique!!");
+                System.err.println("User With This ID Already Exits!!");
                 userID = console.readLine("Please Enter a Valid ID: ");
             }
         }
@@ -268,7 +281,7 @@ public class Cli {
         System.out.println("You Signed up Successfully!!");
     }
 
-    private static boolean checkIfUnique(String id, Role role) {
+    private static boolean checkIfUserExits(String id, Role role) {
         try {
             File file;
             if (role == Role.Professor) {
@@ -277,7 +290,7 @@ public class Cli {
                 });
                 for (Professor professor : professors) {
                     if (professor.getID().equals(id)) {
-                        return false;
+                        return true;
                     }
                 }
             } else if (role == Role.Student) {
@@ -286,14 +299,14 @@ public class Cli {
                 });
                 for (Student student : students) {
                     if (student.getID().equals(id)) {
-                        return false;
+                        return true;
                     }
                 }
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return true;
+        return false;
     }
 
     private static void userLogin(Role role) throws Exception {
@@ -350,43 +363,11 @@ public class Cli {
         return false;
     }
 
-    private static void professorChooseAction(String professorID) throws Exception {
-        System.out.println("1-Add Task");
-        System.out.println("2-Remove Task");
-        System.out.println("3-Score student");
-        System.out.println("4-Score Task");
-        int userNumber = Integer.parseInt(console.readLine("What Action do You Want to Do: "));
-        boolean validNumber = false;
-        while (!validNumber) {
-            try {
-                if (userNumber < 1 || userNumber > 4) {
-                    throw new RuntimeException();
-                }
-                validNumber = true;
-            } catch (Exception e) {
-                System.out.print("please choose valid number:");
-                userNumber = Integer.parseInt(console.readLine("Please Choose Valid Number: "));
-            }
-        }
-        switch (userNumber) {
-            case 1:
-                professorTaskAction(Situation.Add);
-                break;
-            case 2:
-                professorTaskAction(Situation.Remove);
-                break;
-            case 3:
-                professorScoreStudent();
-                break;
-            case 4:
-                professorScoreTask();
-        }
-    }
 
     private static void adminCreateCourse() {
         System.out.println("Complete Course Information Please");
         String courseID = console.readLine("Course ID: ");
-        while (!checkCourseID(courseID)) {
+        while (checkIfCourseExits(courseID)) {
             System.err.println("ID already exists");
             courseID = console.readLine("Enter a Valid ID Please: ");
         }
@@ -435,7 +416,7 @@ public class Cli {
         }
     }
 
-    private static boolean checkCourseID(String id) {
+    private static boolean checkIfCourseExits(String id) {
         File file = new File("Courses.json");
         List<Course> courses;
         try {
@@ -443,13 +424,13 @@ public class Cli {
             });
             for (Course course : courses) {
                 if (course.getId().equals(id)) {
-                    return false;
+                    return true;
                 }
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return true;
+        return false;
     }
 
     private static void validateID(String professorID) {
@@ -485,6 +466,39 @@ public class Cli {
             int day = Integer.parseInt(console.readLine("Days: "));
             int hour = Integer.parseInt(console.readLine("Hours: "));
             Task task = new Task(taskId, day, hour);
+        }
+    }
+
+    private static void professorChooseAction(String professorID) throws Exception {
+        System.out.println("1-Add Task");
+        System.out.println("2-Remove Task");
+        System.out.println("3-Score student");
+        System.out.println("4-Score Task");
+        int userNumber = Integer.parseInt(console.readLine("What Action do You Want to Do: "));
+        boolean validNumber = false;
+        while (!validNumber) {
+            try {
+                if (userNumber < 1 || userNumber > 4) {
+                    throw new RuntimeException();
+                }
+                validNumber = true;
+            } catch (Exception e) {
+                System.out.print("please choose valid number:");
+                userNumber = Integer.parseInt(console.readLine("Please Choose Valid Number: "));
+            }
+        }
+        switch (userNumber) {
+            case 1:
+                professorTaskAction(Situation.Add);
+                break;
+            case 2:
+                professorTaskAction(Situation.Remove);
+                break;
+            case 3:
+                professorScoreStudent();
+                break;
+            case 4:
+                professorScoreTask();
         }
     }
 

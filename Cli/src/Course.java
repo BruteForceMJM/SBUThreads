@@ -105,20 +105,6 @@ public class Course {
         return id;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Course course = (Course) o;
-        return unitsNum == course.unitsNum &&
-                Objects.equals(courseName, course.courseName) &&
-                Objects.equals(professor, course.professor);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(courseName, professor, unitsNum);
-    }
 
     public String getCourseName() {
         return courseName;
@@ -137,6 +123,9 @@ public class Course {
     }
 
     public Semester getSemester() {
+        if (semester == null) {
+            return Semester.ONE;
+        }
         return semester;
     }
 
@@ -162,19 +151,21 @@ public class Course {
                 .collect(Collectors.toList());
     }
 
-    public void addStudent(Student student) throws StudentAlreadyExistsException {
+    public void addStudent(Student student) throws Exception {
         StudentData newStudent = new StudentData(student);
         if (studentsData.contains(newStudent)) {
             throw new StudentAlreadyExistsException();
         }
+        student.addCurrentCourse(this);
         studentsData.add(newStudent);
     }
 
-    public void removeStudent(Student student) throws StudentDoesNotExistException {
+    public void removeStudent(Student student) throws StudentDoesNotExistException, CourseNotFoundException {
         StudentData oldStudent = new StudentData(student);
         if (!studentsData.contains(oldStudent)) {
             throw new StudentDoesNotExistException();
         }
+        student.removeCourse(this);
         studentsData.remove(oldStudent);
     }
 
@@ -262,5 +253,20 @@ public class Course {
                 "courseName='" + courseName + '\'' +
                 ", professor=" + professor +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Course course = (Course) o;
+        return unitsNum == course.unitsNum &&
+                Objects.equals(courseName, course.courseName) &&
+                Objects.equals(professor, course.professor);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(courseName, professor, unitsNum);
     }
 }

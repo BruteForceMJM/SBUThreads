@@ -18,8 +18,10 @@ public class Professor extends Person {
         super(id, password, firstName, lastName);
     }
 
-    public List<Course> getCourses() {
-        return courses;
+    public List<String> getCourses() {
+        return courses.stream()
+                .map(Course::getId)
+                .toList();
     }
 
     public void scoreStudent(Course course, Student student, Double score) throws Exception {
