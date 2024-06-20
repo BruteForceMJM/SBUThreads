@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:login_signup_page/FirstPage/Pallete.dart';
 import 'package:login_signup_page/FirstPage/second_edition_student_classes_page.dart';
+import 'package:login_signup_page/FirstPage/second_edition_student_work_space.dart';
 
 void main(){
   runApp(const Alpha());
@@ -288,7 +289,13 @@ class StudentHomePageEdit extends StatelessWidget {
                      const SizedBox(height: 20,width: 20,),
                      IconButton(onPressed: (){}, icon: const Icon(CupertinoIcons.house_fill,color: Colors.white,size: 30,)),
                      const SizedBox(width: 30, height: 0,),
-                     IconButton(onPressed: (){}, icon: const Icon(Icons.task_rounded,color: Colors.black,size: 30,)),
+                     IconButton(onPressed: (){
+                       Navigator.pushReplacement(
+                           context,
+                           MaterialPageRoute(
+                               builder: (context) =>
+                               const StudentWorkPageEdit()));
+                     }, icon: const Icon(Icons.task_rounded,color: Colors.black,size: 30,)),
                      const SizedBox(width: 30,),
                      IconButton(onPressed: (){
                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const StudentClassPageEdit()));

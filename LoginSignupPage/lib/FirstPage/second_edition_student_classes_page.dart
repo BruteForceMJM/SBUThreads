@@ -6,6 +6,7 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
 import 'package:login_signup_page/FirstPage/Pallete.dart';
 import 'package:login_signup_page/FirstPage/second_edition_student_home_page.dart';
+import 'package:login_signup_page/FirstPage/second_edition_student_work_space.dart';
 
 void main() {
   runApp(const Beta());
@@ -109,7 +110,13 @@ class StudentClassPageEdit extends StatelessWidget {
                         height: 0,
                       ),
                       IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                    const StudentWorkPageEdit()));
+                          },
                           icon: const Icon(
                             Icons.task_rounded,
                             color: Colors.black,
