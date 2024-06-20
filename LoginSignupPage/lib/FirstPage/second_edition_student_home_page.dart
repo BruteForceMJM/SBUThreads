@@ -135,163 +135,190 @@ class StudentHomePageEdit extends StatelessWidget {
         ),
         centerTitle: true,
         ),
-      body: Column(
-        children: [
-          /*MenuBar(
-            children: <Widget>[
-              SubmenuButton(
-                menuChildren: <Widget>[
-                  MenuItemButton(
-                    onPressed: () {
-                      showAboutDialog(
-                        context: context,
-                        applicationName: 'MenuBar Sample',
-                        applicationVersion: '1.0.0',
-                      );
-                    },
-                    child: const MenuAcceleratorLabel('&About'),
-                  ),
-                  MenuItemButton(
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Saved!'),
-                        ),
-                      );
-                    },
-                    child: const MenuAcceleratorLabel('&Save'),
-                  ),
-                  MenuItemButton(
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Quit!'),
-                        ),
-                      );
-                    },
-                    child: const MenuAcceleratorLabel('&Quit'),
-                  ),
-                ],
-                child: const MenuAcceleratorLabel('&File'),
+      body: Container(
+        color: Pallete.backgroundColor,
+        child: Column(
+          children: [
+            Expanded(
+              child: Container(
+                color: Pallete.backgroundColor,
               ),
-              SubmenuButton(
-                menuChildren: <Widget>[
-                  MenuItemButton(
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Magnify!'),
-                        ),
-                      );
-                    },
-                    child: const MenuAcceleratorLabel('&Magnify'),
-                  ),
-                  MenuItemButton(
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Minify!'),
-                        ),
-                      );
-                    },
-                    child: const MenuAcceleratorLabel('Mi&nify'),
-                  ),
-                ],
-                child: const MenuAcceleratorLabel('&View'),
+            ),
+            /*MenuBar(
+              children: <Widget>[
+                SubmenuButton(
+                  menuChildren: <Widget>[
+                    MenuItemButton(
+                      onPressed: () {
+                        showAboutDialog(
+                          context: context,
+                          applicationName: 'MenuBar Sample',
+                          applicationVersion: '1.0.0',
+                        );
+                      },
+                      child: const MenuAcceleratorLabel('&About'),
+                    ),
+                    MenuItemButton(
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Saved!'),
+                          ),
+                        );
+                      },
+                      child: const MenuAcceleratorLabel('&Save'),
+                    ),
+                    MenuItemButton(
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Quit!'),
+                          ),
+                        );
+                      },
+                      child: const MenuAcceleratorLabel('&Quit'),
+                    ),
+                  ],
+                  child: const MenuAcceleratorLabel('&File'),
+                ),
+                SubmenuButton(
+                  menuChildren: <Widget>[
+                    MenuItemButton(
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Magnify!'),
+                          ),
+                        );
+                      },
+                      child: const MenuAcceleratorLabel('&Magnify'),
+                    ),
+                    MenuItemButton(
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Minify!'),
+                          ),
+                        );
+                      },
+                      child: const MenuAcceleratorLabel('Mi&nify'),
+                    ),
+                  ],
+                  child: const MenuAcceleratorLabel('&View'),
+                ),
+              ],
+            ),*/
+            const SizedBox(
+              height: 20,
+            ),
+            const Center(
+              child: Text('خلاصه',style:TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25,
+                  color: Colors.white
               ),
-            ],
-          ),*/
-          const SizedBox(
-            height: 20,
-          ),
-          const Center(
-            child: Text('خلاصه',style:TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 25,
-                color: Colors.white
+              ),
             ),
-            ),
-          ),
-          const SizedBox(height: 10,),
-          GridView.count(
-            shrinkWrap: true,
-            crossAxisCount: 3,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-
-            children: <Widget>[
-              _buildSummaryCard('بهترین نمره 100', CupertinoIcons.star_fill, Colors.blue),
-              _buildSummaryCard('2 تا امتحان داری', CupertinoIcons.heart_slash_fill, Colors.red),
-              _buildSummaryCard('3 تا تمرین داری', CupertinoIcons.time, Colors.pink),
-            ],
-          ),
-          Center(
-            child: GridView.count(
+            const SizedBox(height: 10,),
+            GridView.count(
               shrinkWrap: true,
               crossAxisCount: 3,
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
-              padding: const EdgeInsets.all(0),
+
               children: <Widget>[
-                _buildSummaryCard('2 تا ددلاین پرید', CupertinoIcons.timer, Colors.blueGrey),
-                _buildSummaryCard('بدترین نمره 10', CupertinoIcons.down_arrow, Colors.orange),
+                _buildSummaryCard('بهترین نمره 100', CupertinoIcons.star_fill, Colors.blue),
+                _buildSummaryCard('2 تا امتحان داری', CupertinoIcons.heart_slash_fill, Colors.red),
+                _buildSummaryCard('3 تا تمرین داری', CupertinoIcons.time, Colors.pink),
               ],
             ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          const Center(
-            child: Text(
-              'تسک های جاری',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 25,
-                color: Colors.white
+            Center(
+              child: GridView.count(
+                shrinkWrap: true,
+                crossAxisCount: 3,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                padding: const EdgeInsets.all(0),
+                children: <Widget>[
+                  _buildSummaryCard('2 تا ددلاین پرید', CupertinoIcons.timer, Colors.blueGrey),
+                  _buildSummaryCard('بدترین نمره 10', CupertinoIcons.down_arrow, Colors.orange),
+                ],
               ),
             ),
-          ),
-          const SizedBox(height: 10),
-          _buildTaskCard('آز ریز - تمرین 1', CupertinoIcons.clear_circled_solid, CupertinoIcons.check_mark_circled_solid),
-          _buildTaskCard('تست - تمرین 1', CupertinoIcons.clear_circled_solid, CupertinoIcons.check_mark_circled_solid),
-          const SizedBox(height: 20),
-          const Center(
-            child: Text(
-              'کارهای انجام شده',
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold,color: Colors.white),
+            const SizedBox(
+              height: 20,
             ),
-          ),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              _buildCompletedCard('AP - تمرین 2'),
-              _buildCompletedCard('AP - تمرین 2'),
-            ],
-          ),
-          const SizedBox(height: 80,),
-         Row(
-             children: [                const SizedBox(height: 20,width: 20,),
-                IconButton(onPressed: (){}, icon: const Icon(CupertinoIcons.house_fill,color: Colors.white,size: 30,)),
-                const SizedBox(width: 30, height: 0,),
-                IconButton(onPressed: (){}, icon: const Icon(Icons.task_rounded,color: Colors.white,size: 30,)),
-                const SizedBox(width: 30,),
-                IconButton(onPressed: (){}, icon: const Icon(Icons.add_chart_rounded,color: Colors.white,size: 30,),),
-                const SizedBox(width: 30,),
-                IconButton(onPressed: (){}, icon: const Icon(CupertinoIcons.news_solid,color: Colors.white,size: 30,)),
-                const SizedBox(width: 30,),
-                IconButton(onPressed: (){}, icon: const Icon(Icons.add_business,color: Colors.white,size: 30,))
+            const Center(
+              child: Text(
+                'تسک های جاری',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25,
+                  color: Colors.white
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            _buildTaskCard('آز ریز - تمرین 1', CupertinoIcons.clear_circled_solid, CupertinoIcons.check_mark_circled_solid),
+            _buildTaskCard('تست - تمرین 1', CupertinoIcons.clear_circled_solid, CupertinoIcons.check_mark_circled_solid),
+            const SizedBox(height: 20),
+            const Center(
+              child: Text(
+                'کارهای انجام شده',
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold,color: Colors.white),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                _buildCompletedCard('AP - تمرین 2'),
+                _buildCompletedCard('AP - تمرین 2'),
               ],
-          ),
-          const Row(
-            children: [
-              SizedBox(width: 33,),
-              Text('سرا',style: TextStyle(color: Colors.white)),
-            ],
-          )
+            ),
+            const SizedBox(height: 80,),
+           Container(
+             color: Colors.blueAccent,
+             height: 83,
+             child: Column(
+               children: [
+                 Row(
+                   children: [
+                     const SizedBox(height: 20,width: 20,),
+                     IconButton(onPressed: (){}, icon: const Icon(CupertinoIcons.house_fill,color: Colors.white,size: 30,)),
+                     const SizedBox(width: 30, height: 0,),
+                     IconButton(onPressed: (){}, icon: const Icon(Icons.task_rounded,color: Colors.black,size: 30,)),
+                     const SizedBox(width: 30,),
+                     IconButton(onPressed: (){}, icon: const Icon(Icons.add_chart_rounded,color: Colors.black,size: 30,),),
+                     const SizedBox(width: 30,),
+                     IconButton(onPressed: (){}, icon: const Icon(CupertinoIcons.news_solid,color: Colors.black,size: 30,)),
+                     const SizedBox(width: 30,),
+                     IconButton(onPressed: (){}, icon: const Icon(Icons.add_business,color: Colors.black,size: 30,))
+                   ],
+                 ),
+                 const Row(
+                   children: [
+                     SizedBox(width: 33,),
+                     Text('سرا',style: TextStyle(color: Colors.white,fontSize: 18)),
+                     SizedBox(width: 55,),
+                     Text('کارا',style: TextStyle(color: Colors.black,fontSize: 18)),
+                     SizedBox(width: 46,),
+                     Text('کلاسا',style: TextStyle(color: Colors.black,fontSize: 18)),
+                     SizedBox(width: 48,),
+                     Text('خبرا',style: TextStyle(color: Colors.black,fontSize: 18)),
+                     SizedBox(width: 44,),
+                     Text('تمرینا',style: TextStyle(color: Colors.black,fontSize: 18)),
+                   ],
+
+                 )
+               ],
+             ),
+           )
 
 
-        ],
+
+          ],
+        ),
       )
       );
   }
