@@ -294,7 +294,7 @@ class StudentHomePageEdit extends StatelessWidget {
                            context,
                            MaterialPageRoute(
                                builder: (context) =>
-                               const StudentWorkPageEdit()));
+                               StudentWorkPageEdit()));
                      }, icon: const Icon(Icons.task_rounded,color: Colors.black,size: 30,)),
                      const SizedBox(width: 30,),
                      IconButton(onPressed: (){

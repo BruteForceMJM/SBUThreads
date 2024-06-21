@@ -45,6 +45,16 @@ class StudentClassPageEdit extends StatelessWidget {
                 const SizedBox(
                   width: 20,
                 ),
+                const Text(
+                  ' کلاسا',
+                  style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                ),
+                const SizedBox(
+                  width: 160,
+                ),
                 ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Pallete.gradient1),
@@ -66,16 +76,7 @@ class StudentClassPageEdit extends StatelessWidget {
                     color: Colors.white,
                   ),
                 ),
-                const SizedBox(
-                  width: 160,
-                ),
-                const Text(
-                  ' کلاسا',
-                  style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                )
+
               ],
             ),
             const SizedBox(
@@ -115,7 +116,7 @@ class StudentClassPageEdit extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                    const StudentWorkPageEdit()));
+                                     StudentWorkPageEdit()));
                           },
                           icon: const Icon(
                             Icons.task_rounded,

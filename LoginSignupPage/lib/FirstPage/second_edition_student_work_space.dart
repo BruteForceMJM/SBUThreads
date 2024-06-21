@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:login_signup_page/FirstPage/second_edition_student_classes_page.dart';
 import 'package:login_signup_page/FirstPage/second_edition_student_home_page.dart';
@@ -16,9 +17,13 @@ class Gama extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       color: Pallete.backgroundColor,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
       supportedLocales: const [
         Locale('fa', 'IR'),
       ],
@@ -28,7 +33,6 @@ class Gama extends StatelessWidget{
 
 }
 class StudentWorkPageEdit extends StatefulWidget {
-  const StudentWorkPageEdit({super.key});
 
   @override
   State<StudentWorkPageEdit> createState() => _StudentWorkPageEditState();
@@ -54,7 +58,7 @@ class _StudentWorkPageEditState extends State<StudentWorkPageEdit> {
 
             const Row(
               children: [
-                SizedBox(width: 350,),
+                SizedBox(width: 20,),
                 Text(
                   'کارا',
                   style: TextStyle(
@@ -242,7 +246,7 @@ class _StudentWorkPageEditState extends State<StudentWorkPageEdit> {
                     Padding(
                       padding: const EdgeInsets.only(top: 16.0),
                       child: Text(
-                        'Deadline: ${_selectedJalaliDate!.formatCompactDate()} ${_selectedTime!.format(context)}',
+                        'ددلاین: ${_selectedJalaliDate!.formatCompactDate()} ${_selectedTime!.format(context)}',
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -251,7 +255,7 @@ class _StudentWorkPageEditState extends State<StudentWorkPageEdit> {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('Cancel'),
+                  child: const Text('بازگشت'),
                 ),
                 TextButton(
                   onPressed: () {
@@ -260,7 +264,7 @@ class _StudentWorkPageEditState extends State<StudentWorkPageEdit> {
                     });
                     Navigator.of(context).pop();
                   },
-                  child: const Text('Set Deadline'),
+                  child: const Text('ذخیره'),
                 ),
               ],
             );
