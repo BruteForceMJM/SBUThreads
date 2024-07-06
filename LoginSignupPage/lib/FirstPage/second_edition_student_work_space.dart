@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -43,6 +45,11 @@ class StudentWorkPageEdit extends StatefulWidget {
 class _StudentWorkPageEditState extends State<StudentWorkPageEdit> {
   Jalali? _selectedJalaliDate;
   TimeOfDay? _selectedTime;
+  final TextEditingController _controller =TextEditingController(text: "");
+  String _log="";
+  String _dayLog="";
+  String _hourLog="";
+
 
   @override
   Widget build(BuildContext context) {
@@ -204,6 +211,27 @@ class _StudentWorkPageEditState extends State<StudentWorkPageEdit> {
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      hintText: 'کار جدید را وارد کنید',
+                      contentPadding: EdgeInsets.all(20),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Pallete.borderColor,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Pallete.gradient1,
+                          width: 4,
+                        ),
+                      ),
+                    ),
+                    controller: _controller,
+                  ),
+                  Text(
+                    _log
+                  ),
                   ListTile(
                     title: const Text("انتخاب روز ددلاین"),
                     subtitle: Text(_selectedJalaliDate != null
@@ -262,7 +290,7 @@ class _StudentWorkPageEditState extends State<StudentWorkPageEdit> {
                 TextButton(
                   onPressed: () {
                     setState(() {
-                      // Update the state to show the selected deadline in the main screen
+                      send(_controller.text,_selectedJalaliDate.toString(),_selectedTime.toString());
                     });
                     Navigator.of(context).pop();
                   },
@@ -274,6 +302,21 @@ class _StudentWorkPageEditState extends State<StudentWorkPageEdit> {
         );
       }
     );
+  }
+  send(String userText, String userDay,String userHour) async{
+    String request = "$userText-$userDay-$userHour\u0000";
+    await Socket.connect("10.0.2.2", 8000).then((serverSocket) {
+
+      serverSocket.write(request);
+      serverSocket.flush();
+      serverSocket.listen((response) {
+        print(String.fromCharCodes(response));
+        setState(() {
+          _log += "${String.fromCharCodes(response)}\n";
+        });
+      });
+    });
+
   }
 }
 
