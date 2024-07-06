@@ -17,14 +17,14 @@ class Gama extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       color: Pallete.backgroundColor,
-      localizationsDelegates: const [
+      localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
-      supportedLocales: const [
+      supportedLocales: [
         Locale('fa', 'IR'),
       ],
       home: StudentWorkPageEdit(),
@@ -33,6 +33,8 @@ class Gama extends StatelessWidget{
 
 }
 class StudentWorkPageEdit extends StatefulWidget {
+  const StudentWorkPageEdit({super.key});
+
 
   @override
   State<StudentWorkPageEdit> createState() => _StudentWorkPageEditState();

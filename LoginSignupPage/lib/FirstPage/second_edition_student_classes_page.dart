@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
@@ -203,6 +204,8 @@ class UserInputClassesInfo extends StatefulWidget {
 }
 
 class _UserInputClassesInfo extends State<UserInputClassesInfo> {
+  final TextEditingController _controller = TextEditingController(text: "");
+  String _log ="";
   final _formKey = GlobalKey<FormState>();
   String _subjectCode = '';
 
@@ -240,11 +243,15 @@ class _UserInputClassesInfo extends State<UserInputClassesInfo> {
               onSaved: (value) {
                 _subjectCode = value!;
               },
+              controller: _controller,
             )
           ],
         ),
       ),
       actions: [
+        Text(
+          _log
+        ),
         Row(
           children: [
             TextButton(
@@ -265,7 +272,9 @@ class _UserInputClassesInfo extends State<UserInputClassesInfo> {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     Navigator.of(context).pop();
+                    send(_controller.text);
                   }
+
                 },
                 style: TextButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
@@ -278,8 +287,25 @@ class _UserInputClassesInfo extends State<UserInputClassesInfo> {
                 child: const Text('افزودن کلاس')),
 
           ],
-        )
+        ),
+
       ],
     );
+  }
+
+  send(String information) async{
+    String request = "$information\u0000";
+    await Socket.connect("10.0.2.2", 8000).then((serverSocket) {
+
+      serverSocket.write(request);
+      serverSocket.flush();
+      serverSocket.listen((response) {
+        print(String.fromCharCodes(response));
+        setState(() {
+          _log += "${String.fromCharCodes(response)}\n";
+        });
+      });
+    });
+
   }
 }
