@@ -1,3 +1,7 @@
+import 'dart:core';
+import 'dart:ffi';
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:login_signup_page/FirstPage/student_classes_page.dart';
@@ -27,6 +31,11 @@ class _LoginPageState extends State<LoginPage> {
   String _username = '';
   String _password = '';
   String _role = 'student';
+  String _log = "";
+  final TextEditingController _controllerUsername = TextEditingController(text: "");
+  final TextEditingController _controllerPassword =TextEditingController(text: "");
+  bool isUserNameSignupValid =false;
+  bool isPasswordSignupValid=false;
 
   bool _isInvisible=true;
   void _changeVisibilityStatus(){
@@ -54,6 +63,7 @@ class _LoginPageState extends State<LoginPage> {
 
 
   void _login() {
+    send(_controllerUsername.text, _controllerPassword.text);
     if(_formKey.currentState!=null){
       if (_formKey.currentState!.validate()) {
         if (_username == 'admin' && _password == 'admin') {
@@ -128,6 +138,7 @@ class _LoginPageState extends State<LoginPage> {
                                 if (!_validateRole(value)) {
                                   return 'نام کاربری وارد شده صحیح نیست';
                                 }
+                                isUserNameSignupValid=true;
                                 return null;
                               },
                             ),
@@ -171,6 +182,8 @@ class _LoginPageState extends State<LoginPage> {
                                 return null;
                               },
                               obscureText: _isInvisible,
+
+                              controller: _controllerPassword,
                             ),
                             const SizedBox(
                               height: 10,
@@ -301,4 +314,18 @@ class _LoginPageState extends State<LoginPage> {
       },
     );
   }
+
+  send(String userName,String password) async {
+    String request = "$userName-$password\u0000";
+    await Socket.connect("10.0.2.2", 8000).then((serverSocket){
+      serverSocket.write(request);
+      serverSocket.flush();
+      serverSocket.listen((response) {
+        print(String.fromCharCodes(response));
+        setState(() {
+          _log += "${String.fromCharCodes(response)}\n";
+        });
+      });
+    });
+ }
 }

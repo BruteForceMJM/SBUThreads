@@ -8,7 +8,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:login_signup_page/FirstPage/Pallete.dart';
 import 'package:login_signup_page/FirstPage/second_edition_student_classes_page.dart';
+import 'package:login_signup_page/FirstPage/second_edition_student_news_page.dart';
 import 'package:login_signup_page/FirstPage/second_edition_student_work_space.dart';
+import 'package:login_signup_page/FirstPage/student_news_page.dart';
 
 void main(){
   runApp(const Alpha());
@@ -19,6 +21,7 @@ class Alpha extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
+
       debugShowCheckedModeBanner: false,
       home: StudentHomePageEdit(),
     );
@@ -294,14 +297,18 @@ class StudentHomePageEdit extends StatelessWidget {
                            context,
                            MaterialPageRoute(
                                builder: (context) =>
-                               StudentWorkPageEdit()));
+                               const StudentWorkPageEdit()));
                      }, icon: const Icon(Icons.task_rounded,color: Colors.black,size: 30,)),
                      const SizedBox(width: 30,),
                      IconButton(onPressed: (){
                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const StudentClassPageEdit()));
                      }, icon: const Icon(Icons.add_chart_rounded,color: Colors.black,size: 30,),),
                      const SizedBox(width: 30,),
-                     IconButton(onPressed: (){}, icon: const Icon(CupertinoIcons.news_solid,color: Colors.black,size: 30,)),
+                     IconButton(onPressed: (){
+                       Navigator.pushReplacement(context,
+                         MaterialPageRoute(builder: (context)=> const StudentNewsPageSecondEdition())
+                       );
+                     }, icon: const Icon(CupertinoIcons.news_solid,color: Colors.black,size: 30,)),
                      const SizedBox(width: 30,),
                      IconButton(onPressed: (){}, icon: const Icon(Icons.add_business,color: Colors.black,size: 30,))
                    ],

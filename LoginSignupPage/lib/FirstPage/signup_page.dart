@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:login_signup_page/FirstPage/student_page.dart';
@@ -17,6 +19,11 @@ class _SignupPageState extends State<SiignupPage>{
   String _password='';
   String _confirmPasswrod='';
   String _role='student';
+
+  String _log="";
+  final TextEditingController _controllerUsername =TextEditingController(text: "");
+  final TextEditingController _controllerPassword=TextEditingController(text: "");
+
 
   bool _isInvisiblePassword=true;
   void _changeInvisibilityState(){
@@ -43,6 +50,7 @@ class _SignupPageState extends State<SiignupPage>{
   }
 
   void _signup() {
+    send(_controllerUsername.text, _controllerPassword.text);
     if (_formKey.currentState!.validate()) {
       if (_role == 'student') {
         Navigator.push(context, MaterialPageRoute(builder: (context) =>const StudentPage()));
@@ -83,6 +91,7 @@ class _SignupPageState extends State<SiignupPage>{
                         child: Column(
                           children: [
                             TextFormField(
+                              controller: _controllerUsername,
                               decoration: const InputDecoration(
                                 hintText: 'Username',
                                 contentPadding: EdgeInsets.all(20),
@@ -104,7 +113,7 @@ class _SignupPageState extends State<SiignupPage>{
                               height: 10,
                             ),
                             TextFormField(
-
+                              controller: _controllerPassword,
                               decoration:  InputDecoration(
                                 suffixIcon: IconButton(onPressed: (){
                                   setState(() {
@@ -283,6 +292,19 @@ class _SignupPageState extends State<SiignupPage>{
         scaffoldBackgroundColor: Pallete.backgroundColor,
       ),
     );
+  }
+
+  send(String userName,String password) async{
+    String request = "$userName-$password\u0000";
+    await Socket.connect("10.0.2.2", 8000).then((serverSocket){
+      serverSocket.write(request);
+      serverSocket.flush();
+      serverSocket.listen((response) {
+        print(String.fromCharCodes(response));
+        _log += String.fromCharCodes(response);
+      });
+    });
+
   }
 
 }

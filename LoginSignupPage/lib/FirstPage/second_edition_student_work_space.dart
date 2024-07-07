@@ -6,6 +6,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:login_signup_page/FirstPage/second_edition_student_classes_page.dart';
 import 'package:login_signup_page/FirstPage/second_edition_student_home_page.dart';
+import 'package:login_signup_page/FirstPage/second_edition_student_news_page.dart';
+import 'package:login_signup_page/FirstPage/student_news_page.dart';
 import 'package:login_signup_page/alpha/a.dart';
 import 'package:shamsi_date/shamsi_date.dart';
 
@@ -145,7 +147,11 @@ class _StudentWorkPageEditState extends State<StudentWorkPageEdit> {
                         width: 30,
                       ),
                       IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushReplacement(context,
+                                MaterialPageRoute(builder: (context)=> const StudentNewsPageSecondEdition())
+                            );
+                          },
                           icon: const Icon(
                             CupertinoIcons.news_solid,
                             color: Colors.black,
