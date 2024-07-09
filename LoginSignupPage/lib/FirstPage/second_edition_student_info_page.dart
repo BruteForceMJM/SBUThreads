@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:login_signup_page/FirstPage/Pallete.dart';
 import 'package:login_signup_page/FirstPage/login_page.dart';
+import 'package:login_signup_page/FirstPage/second_edition_student_classes_page.dart';
 import 'package:login_signup_page/FirstPage/second_edition_student_home_page.dart';
 import 'package:login_signup_page/FirstPage/second_edition_student_news_page.dart';
+import 'package:login_signup_page/FirstPage/second_edition_student_practices_page.dart';
 import 'package:login_signup_page/FirstPage/second_edition_student_work_space.dart';
 
 void main(){
@@ -215,7 +217,13 @@ class _StudentInfoPageEditState extends State<StudentInfoPageEdit> {
                       width: 20,
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const StudentClassPageEdit()));
+                      },
                       icon: const Icon(
                         Icons.add_chart_rounded,
                         color: Colors.black,
@@ -240,7 +248,13 @@ class _StudentInfoPageEditState extends State<StudentInfoPageEdit> {
                       width: 20,
                     ),
                     IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const StudentPracticesPageEdition()));
+                        },
                         icon: const Icon(
                           Icons.add_business,
                           color: Colors.black,

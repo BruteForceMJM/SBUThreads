@@ -9,6 +9,7 @@ import 'package:flutter/widgets.dart';
 import 'package:login_signup_page/FirstPage/Pallete.dart';
 import 'package:login_signup_page/FirstPage/second_edition_student_classes_page.dart';
 import 'package:login_signup_page/FirstPage/second_edition_student_news_page.dart';
+import 'package:login_signup_page/FirstPage/second_edition_student_practices_page.dart';
 import 'package:login_signup_page/FirstPage/second_edition_student_work_space.dart';
 import 'package:login_signup_page/FirstPage/student_news_page.dart';
 
@@ -310,7 +311,13 @@ class StudentHomePageEdit extends StatelessWidget {
                        );
                      }, icon: const Icon(CupertinoIcons.news_solid,color: Colors.black,size: 30,)),
                      const SizedBox(width: 30,),
-                     IconButton(onPressed: (){}, icon: const Icon(Icons.add_business,color: Colors.black,size: 30,))
+                     IconButton(onPressed: (){
+                       Navigator.pushReplacement(
+                           context,
+                           MaterialPageRoute(
+                               builder: (context) =>
+                                   const StudentPracticesPageEdition()));
+                     }, icon: const Icon(Icons.add_business,color: Colors.black,size: 30,))
                    ],
                  ),
                  const Row(

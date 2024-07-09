@@ -5,6 +5,8 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:login_signup_page/FirstPage/Pallete.dart';
 import 'package:login_signup_page/FirstPage/second_edition_student_classes_page.dart';
 import 'package:login_signup_page/FirstPage/second_edition_student_home_page.dart';
+import 'package:login_signup_page/FirstPage/second_edition_student_info_page.dart';
+import 'package:login_signup_page/FirstPage/second_edition_student_practices_page.dart';
 import 'package:login_signup_page/FirstPage/second_edition_student_work_space.dart';
 import 'package:login_signup_page/FirstPage/student_news_page.dart';
 
@@ -92,7 +94,11 @@ class _StudentNewsPageSection2State extends State<StudentNewsPageSection2> {
                     ),
                     IconButton(
                       onPressed: () {
-
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const StudentInfoPageEdit()));
                       },
                       icon: const Icon(
                         Icons.account_circle,
@@ -118,7 +124,13 @@ class _StudentNewsPageSection2State extends State<StudentNewsPageSection2> {
                       width: 20,
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    StudentClassPageEdit()));
+                      },
                       icon: const Icon(
                         Icons.add_chart_rounded,
                         color: Colors.black,
@@ -143,7 +155,13 @@ class _StudentNewsPageSection2State extends State<StudentNewsPageSection2> {
                       width: 20,
                     ),
                     IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      StudentPracticesPageEdition()));
+                        },
                         icon: const Icon(
                           Icons.add_business,
                           color: Colors.black,

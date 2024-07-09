@@ -35,8 +35,6 @@ class _LoginPageState extends State<LoginPage> {
       TextEditingController(text: "");
   final TextEditingController _controllerPassword =
       TextEditingController(text: "");
-  bool _isUserNameSignupValid = false;
-  bool _isPasswordSignupValid = false;
 
   bool _isInvisible = true;
 
@@ -64,7 +62,6 @@ class _LoginPageState extends State<LoginPage> {
 
   void _login() {
     send(_controllerUsername.text, _controllerPassword.text);
-
     if (_formKey.currentState != null) {
       if (_formKey.currentState!.validate()) {
         if (_username == 'admin' && _password == 'admin') {
@@ -116,6 +113,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Column(
                           children: [
                             TextFormField(
+                              controller: _controllerUsername,
                               decoration: const InputDecoration(
                                 hintText: 'Username',
                                 contentPadding: EdgeInsets.all(20),
@@ -143,8 +141,7 @@ class _LoginPageState extends State<LoginPage> {
                                   print("Pass:${_controllerPassword.text}");
                                   return 'نام کاربری وارد شده صحیح نیست';
                                 }
-                                _controllerUsername.text = value;
-                                _isUserNameSignupValid = true;
+                                //_controllerUsername.text = value;
                                 return null;
                               },
                             ),
@@ -152,6 +149,7 @@ class _LoginPageState extends State<LoginPage> {
                               height: 10,
                             ),
                             TextFormField(
+                              controller: _controllerPassword,
                               decoration: InputDecoration(
                                 suffixIcon: IconButton(
                                   onPressed: () {
@@ -187,8 +185,7 @@ class _LoginPageState extends State<LoginPage> {
                                 if (!_validatePassword(value)) {
                                   return 'رمز عبور به اندازه کافی قوی نیست';
                                 }
-                                _controllerPassword.text = value;
-                                _isPasswordSignupValid = true;
+                                //_controllerPassword.text = value;
                                 return null;
                               },
                               obscureText: _isInvisible,

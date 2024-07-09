@@ -7,7 +7,9 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
 import 'package:login_signup_page/FirstPage/Pallete.dart';
 import 'package:login_signup_page/FirstPage/second_edition_student_home_page.dart';
+import 'package:login_signup_page/FirstPage/second_edition_student_info_page.dart';
 import 'package:login_signup_page/FirstPage/second_edition_student_news_page.dart';
+import 'package:login_signup_page/FirstPage/second_edition_student_practices_page.dart';
 import 'package:login_signup_page/FirstPage/second_edition_student_work_space.dart';
 import 'package:login_signup_page/FirstPage/student_news_page.dart';
 
@@ -115,7 +117,11 @@ class StudentClassPageEdit extends StatelessWidget {
                       ),
                       IconButton(
                         onPressed: (){
-
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const StudentInfoPageEdit()));
                         },
                         icon: const Icon(
                           Icons.account_circle,
@@ -166,7 +172,13 @@ class StudentClassPageEdit extends StatelessWidget {
                         width: 20,
                       ),
                       IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        StudentPracticesPageEdition()));
+                          },
                           icon: const Icon(
                             Icons.add_business,
                             color: Colors.black,
