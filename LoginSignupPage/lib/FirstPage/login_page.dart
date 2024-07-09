@@ -1,5 +1,4 @@
 import 'dart:core';
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -32,15 +31,18 @@ class _LoginPageState extends State<LoginPage> {
   String _password = '';
   String _role = 'student';
   String _log = "";
-  final TextEditingController _controllerUsername = TextEditingController(text: "");
-  final TextEditingController _controllerPassword =TextEditingController(text: "");
-  bool isUserNameSignupValid =false;
-  bool isPasswordSignupValid=false;
+  final TextEditingController _controllerUsername =
+      TextEditingController(text: "");
+  final TextEditingController _controllerPassword =
+      TextEditingController(text: "");
+  bool _isUserNameSignupValid = false;
+  bool _isPasswordSignupValid = false;
 
-  bool _isInvisible=true;
-  void _changeVisibilityStatus(){
+  bool _isInvisible = true;
+
+  void _changeVisibilityStatus() {
     setState(() {
-      _isInvisible=!_isInvisible;
+      _isInvisible = !_isInvisible;
     });
   }
 
@@ -60,29 +62,28 @@ class _LoginPageState extends State<LoginPage> {
     return regex.hasMatch(password);
   }
 
-
-
   void _login() {
     send(_controllerUsername.text, _controllerPassword.text);
-    if(_formKey.currentState!=null){
+
+    if (_formKey.currentState != null) {
       if (_formKey.currentState!.validate()) {
         if (_username == 'admin' && _password == 'admin') {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const AdminPage()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const AdminPage()));
         } else if (RegExp(r'^\d{9}$').hasMatch(_username)) {
-          if(_role=='student'){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const StudentPage()));
-          }else if(_role=='teacher'){
-            Navigator.push(context, MaterialPageRoute(builder: (context) =>TeacherPage()));
+          if (_role == 'student') {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const StudentPage()));
+          } else if (_role == 'teacher') {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => TeacherPage()));
           }
           /*Navigator.pushNamed(
               context, _role == 'student' ? '/student' : '/teacher');*/
         }
       }
     }
-
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -110,8 +111,8 @@ class _LoginPageState extends State<LoginPage> {
                     constraints: const BoxConstraints(
                       maxWidth: 300,
                     ),
-                    child:Form(
-                      key: _formKey,
+                    child: Form(
+                        key: _formKey,
                         child: Column(
                           children: [
                             TextFormField(
@@ -133,12 +134,17 @@ class _LoginPageState extends State<LoginPage> {
                               onChanged: (value) => _username = value,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
+                                  print("Username:${_controllerUsername.text}");
+                                  print("Pass:${_controllerPassword.text}");
                                   return 'لطفا نام کاربری خود را وارد کنید';
                                 }
                                 if (!_validateRole(value)) {
+                                  print("Username:${_controllerUsername.text}");
+                                  print("Pass:${_controllerPassword.text}");
                                   return 'نام کاربری وارد شده صحیح نیست';
                                 }
-                                isUserNameSignupValid=true;
+                                _controllerUsername.text = value;
+                                _isUserNameSignupValid = true;
                                 return null;
                               },
                             ),
@@ -154,7 +160,9 @@ class _LoginPageState extends State<LoginPage> {
                                     });
                                   },
                                   icon: Icon(
-                                    _isInvisible? Icons.visibility : Icons.visibility_off,
+                                    _isInvisible
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
                                   ),
                                 ),
                                 hintText: 'Password',
@@ -179,11 +187,11 @@ class _LoginPageState extends State<LoginPage> {
                                 if (!_validatePassword(value)) {
                                   return 'رمز عبور به اندازه کافی قوی نیست';
                                 }
+                                _controllerPassword.text = value;
+                                _isPasswordSignupValid = true;
                                 return null;
                               },
                               obscureText: _isInvisible,
-
-                              controller: _controllerPassword,
                             ),
                             const SizedBox(
                               height: 10,
@@ -196,11 +204,11 @@ class _LoginPageState extends State<LoginPage> {
                                 decoration: const InputDecoration(
                                   enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: Pallete.borderColor,
-                                      )),
+                                    color: Pallete.borderColor,
+                                  )),
                                   focusedBorder: OutlineInputBorder(
                                       borderSide:
-                                      BorderSide(color: Pallete.gradient2)),
+                                          BorderSide(color: Pallete.gradient2)),
                                   fillColor: Pallete.backgroundColor,
                                   labelText: 'نقش',
                                   prefixIcon: Icon(CupertinoIcons.add),
@@ -242,7 +250,7 @@ class _LoginPageState extends State<LoginPage> {
                               child: ElevatedButton(
                                 onPressed: _login,
                                 style: ElevatedButton.styleFrom(
-                                  fixedSize: const Size(400, 60),
+                                  fixedSize: Size(400, 60),
                                   backgroundColor: Colors.transparent,
                                 ),
                                 child: const Text(
@@ -261,20 +269,20 @@ class _LoginPageState extends State<LoginPage> {
                             Container(
                               decoration: const BoxDecoration(
                                   gradient: LinearGradient(colors: [
-                                    Pallete.gradient1,
-                                    Pallete.gradient2,
-                                    Pallete.gradient3
-                                  ])),
+                                Pallete.gradient1,
+                                Pallete.gradient2,
+                                Pallete.gradient3
+                              ])),
                               child: ElevatedButton(
                                 onPressed: () {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                          const LoginScreen()));
+                                              const LoginScreen()));
                                 },
                                 style: ElevatedButton.styleFrom(
-                                    fixedSize: const Size(400, 60),
+                                    fixedSize: Size(400, 60),
                                     backgroundColor: Colors.transparent),
                                 child: const Text(
                                   'بازگشت',
@@ -290,8 +298,7 @@ class _LoginPageState extends State<LoginPage> {
                               height: 10,
                             ),
                           ],
-                        )
-                    ) ),
+                        ))),
               ],
             ),
           ),
@@ -315,9 +322,9 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  send(String userName,String password) async {
+  send(String userName, String password) async {
     String request = "$userName-$password\u0000";
-    await Socket.connect("10.0.2.2", 8000).then((serverSocket){
+    await Socket.connect("10.0.2.2", 8000).then((serverSocket) {
       serverSocket.write(request);
       serverSocket.flush();
       serverSocket.listen((response) {
@@ -327,5 +334,5 @@ class _LoginPageState extends State<LoginPage> {
         });
       });
     });
- }
+  }
 }

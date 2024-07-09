@@ -306,7 +306,7 @@ class StudentHomePageEdit extends StatelessWidget {
                      const SizedBox(width: 30,),
                      IconButton(onPressed: (){
                        Navigator.pushReplacement(context,
-                         MaterialPageRoute(builder: (context)=> const StudentNewsPageSecondEdition())
+                         MaterialPageRoute(builder: (context)=> const StudentNewsPageSection2())
                        );
                      }, icon: const Icon(CupertinoIcons.news_solid,color: Colors.black,size: 30,)),
                      const SizedBox(width: 30,),

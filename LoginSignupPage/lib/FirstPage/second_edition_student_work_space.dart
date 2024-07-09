@@ -51,8 +51,6 @@ class _StudentWorkPageEditState extends State<StudentWorkPageEdit> {
   String _log="";
   String _dayLog="";
   String _hourLog="";
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,27 +114,38 @@ class _StudentWorkPageEditState extends State<StudentWorkPageEdit> {
                             size: 30,
                           )),
                       const SizedBox(
-                        width: 30,
+                        width: 20,
                         height: 0,
                       ),
                       IconButton(
-                          onPressed: () {},
+                        onPressed: (){
+
+                        },
+                        icon: const Icon(
+                          Icons.account_circle,
+                          color: Colors.black,
+                          size: 30,
+                        ),
+                      ),
+                      const SizedBox(width: 20,),
+                      IconButton(
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const StudentWorkPageEdit()));
+                          },
                           icon: const Icon(
                             Icons.task_rounded,
                             color: Colors.white,
                             size: 30,
                           )),
                       const SizedBox(
-                        width: 30,
+                        width: 20,
                       ),
                       IconButton(
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                  const StudentClassPageEdit()));
-                        },
+                        onPressed: () {},
                         icon: const Icon(
                           Icons.add_chart_rounded,
                           color: Colors.black,
@@ -144,12 +153,12 @@ class _StudentWorkPageEditState extends State<StudentWorkPageEdit> {
                         ),
                       ),
                       const SizedBox(
-                        width: 30,
+                        width: 20,
                       ),
                       IconButton(
                           onPressed: () {
                             Navigator.pushReplacement(context,
-                                MaterialPageRoute(builder: (context)=> const StudentNewsPageSecondEdition())
+                                MaterialPageRoute(builder: (context)=> const StudentNewsPageSection2())
                             );
                           },
                           icon: const Icon(
@@ -158,7 +167,7 @@ class _StudentWorkPageEditState extends State<StudentWorkPageEdit> {
                             size: 30,
                           )),
                       const SizedBox(
-                        width: 30,
+                        width: 20,
                       ),
                       IconButton(
                           onPressed: () {},
@@ -177,22 +186,27 @@ class _StudentWorkPageEditState extends State<StudentWorkPageEdit> {
                       Text('سرا',
                           style: TextStyle(color: Colors.black, fontSize: 18)),
                       SizedBox(
-                        width: 55,
+                        width: 40,
+                      ),
+                      Text('حسابا',
+                          style: TextStyle(color: Colors.black, fontSize: 18)),
+                      SizedBox(
+                        width: 30,
                       ),
                       Text('کارا',
                           style: TextStyle(color: Colors.white, fontSize: 18)),
                       SizedBox(
-                        width: 46,
+                        width: 40,
                       ),
                       Text('کلاسا',
                           style: TextStyle(color: Colors.black, fontSize: 18)),
                       SizedBox(
-                        width: 48,
+                        width: 40,
                       ),
                       Text('خبرا',
                           style: TextStyle(color: Colors.black, fontSize: 18)),
                       SizedBox(
-                        width: 44,
+                        width: 40,
                       ),
                       Text('تمرینا',
                           style: TextStyle(color: Colors.black, fontSize: 18)),

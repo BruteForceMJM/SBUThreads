@@ -102,7 +102,7 @@ class StudentClassPageEdit extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        const StudentHomePageEdit()));
+                                    const StudentHomePageEdit()));
                           },
                           icon: const Icon(
                             CupertinoIcons.house_fill,
@@ -110,16 +110,27 @@ class StudentClassPageEdit extends StatelessWidget {
                             size: 30,
                           )),
                       const SizedBox(
-                        width: 30,
+                        width: 20,
                         height: 0,
                       ),
+                      IconButton(
+                        onPressed: (){
+
+                        },
+                        icon: const Icon(
+                          Icons.account_circle,
+                          color: Colors.black,
+                          size: 30,
+                        ),
+                      ),
+                      const SizedBox(width: 20,),
                       IconButton(
                           onPressed: () {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                     StudentWorkPageEdit()));
+                                        StudentWorkPageEdit()));
                           },
                           icon: const Icon(
                             Icons.task_rounded,
@@ -127,7 +138,7 @@ class StudentClassPageEdit extends StatelessWidget {
                             size: 30,
                           )),
                       const SizedBox(
-                        width: 30,
+                        width: 20,
                       ),
                       IconButton(
                         onPressed: () {},
@@ -138,12 +149,12 @@ class StudentClassPageEdit extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(
-                        width: 30,
+                        width: 20,
                       ),
                       IconButton(
                           onPressed: () {
                             Navigator.pushReplacement(context,
-                                MaterialPageRoute(builder: (context)=> const StudentNewsPageSecondEdition())
+                                MaterialPageRoute(builder: (context)=> const StudentNewsPageSection2())
                             );
                           },
                           icon: const Icon(
@@ -152,7 +163,7 @@ class StudentClassPageEdit extends StatelessWidget {
                             size: 30,
                           )),
                       const SizedBox(
-                        width: 30,
+                        width: 20,
                       ),
                       IconButton(
                           onPressed: () {},
@@ -171,22 +182,27 @@ class StudentClassPageEdit extends StatelessWidget {
                       Text('سرا',
                           style: TextStyle(color: Colors.black, fontSize: 18)),
                       SizedBox(
-                        width: 55,
+                        width: 40,
+                      ),
+                      Text('حسابا',
+                          style: TextStyle(color: Colors.black, fontSize: 18)),
+                      SizedBox(
+                        width: 30,
                       ),
                       Text('کارا',
                           style: TextStyle(color: Colors.black, fontSize: 18)),
                       SizedBox(
-                        width: 46,
+                        width: 40,
                       ),
                       Text('کلاسا',
                           style: TextStyle(color: Colors.white, fontSize: 18)),
                       SizedBox(
-                        width: 48,
+                        width: 40,
                       ),
                       Text('خبرا',
                           style: TextStyle(color: Colors.black, fontSize: 18)),
                       SizedBox(
-                        width: 44,
+                        width: 40,
                       ),
                       Text('تمرینا',
                           style: TextStyle(color: Colors.black, fontSize: 18)),

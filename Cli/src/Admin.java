@@ -1,5 +1,4 @@
 package Cli.src;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -37,9 +36,9 @@ public class Admin {
         ObjectMapper mapper = new ObjectMapper();
         File studentsFile = new File("Students.json");
         File coursesFile = new File("Courses.json");
-        List<Student> students = mapper.readValue(studentsFile, new TypeReference<>() {
+        List<Cli.src.Student> students = mapper.readValue(studentsFile, new TypeReference<>() {
         });
-        List<Course> courses = mapper.readValue(coursesFile, new TypeReference<>() {
+        List<Cli.src.Course> courses = mapper.readValue(coursesFile, new TypeReference<>() {
         });
         for (Course course : courses) {
             if (course.getId().equals(courseID)) {
