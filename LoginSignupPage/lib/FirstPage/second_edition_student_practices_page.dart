@@ -1,22 +1,30 @@
+import 'dart:io';
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:login_signup_page/FirstPage/Pallete.dart';
-import 'package:login_signup_page/FirstPage/second_edition_student_classes_page.dart';
-import 'package:login_signup_page/FirstPage/second_edition_student_home_page.dart';
-import 'package:login_signup_page/FirstPage/second_edition_student_info_page.dart';
-import 'package:login_signup_page/FirstPage/second_edition_student_news_page.dart';
-import 'package:login_signup_page/FirstPage/second_edition_student_work_space.dart';
+
+import '../FirstPage/second_edition_student_classes_page.dart';
+import '../FirstPage/second_edition_student_home_page.dart';
+import '../FirstPage/second_edition_student_info_page.dart';
+import '../FirstPage/second_edition_student_news_page.dart';
+import '../FirstPage/second_edition_student_work_space.dart';
 
 void main() {
-  runApp(Execute());
+  runApp(MyApp());
 }
 
-class Execute extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: StudentPracticesPageEdition(),
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.purple,
+      ),
+      home: StudentPracticesPageEdition(),
     );
   }
 }
@@ -25,18 +33,16 @@ class StudentPracticesPageEdition extends StatefulWidget {
   const StudentPracticesPageEdition({super.key});
 
   @override
-  State<StudentPracticesPageEdition> createState() =>
-      _StudentPracticesPageEditionState();
+  _StudentPracticesPageEditionState createState() => _StudentPracticesPageEditionState();
 }
 
-class _StudentPracticesPageEditionState
-    extends State<StudentPracticesPageEdition> {
+class _StudentPracticesPageEditionState extends State<StudentPracticesPageEdition> {
   final List<Map<String, String>> _infoList = [];
-  void _openDialogEdition() {
-    final _titleController = TextEditingController();
-    final _deadlineController = TextEditingController();
-    final _explanationController = TextEditingController();
-
+  String _log ="" ;
+  final _titleController = TextEditingController();
+  final _deadlineController = TextEditingController();
+  final _explanationController = TextEditingController();
+  void _openDialog() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -50,7 +56,7 @@ class _StudentPracticesPageEditionState
                   children: [
                     Text('عنوان: '),
                     Expanded(
-                      child: TextField(
+                      child: TextFormField(
                         controller: _titleController,
                       ),
                     ),
@@ -87,6 +93,7 @@ class _StudentPracticesPageEditionState
                     'explanation': _explanationController.text,
                   });
                 });
+                send(_titleController.text, _deadlineController.text, _explanationController.text);
                 Navigator.of(context).pop();
               },
             ),
@@ -100,58 +107,42 @@ class _StudentPracticesPageEditionState
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Pallete.backgroundColor,
-      body: Container(
+      appBar: AppBar(
+        backgroundColor: Pallete.backgroundColor,
+        title: const Center(child: Text('تمرینات',style: TextStyle(
+          color: Colors.white,
+          fontSize: 30,
+          fontWeight: FontWeight.bold
+        ),)),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Column(
-          children: [
-            Expanded(
-              child: Container(
-
-              ),
-            ),
-            Row(
-              children: [
-                const SizedBox(width: 20,),
-                ElevatedButton(
-                  onPressed: _openDialogEdition,
-                  child: Text('افزودن تمرین'),
-                ),
-                const SizedBox(
-                  width: 160,
-                ),
-                const Text(
-                  'تمرینات',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
+          children: <Widget>[
+            ElevatedButton(
+              onPressed: _openDialog,
+              child: Text('افزودن تمرین'),
             ),
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: ListView.builder(
-                  itemCount: _infoList.length,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      shadowColor: Colors.white,
-                      child: ListTile(
-                        title: Text('عنوان: ${_infoList[index]['title']}', style: TextStyle(color: Colors.white)),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('مهلت: ${_infoList[index]['deadline']}', style: TextStyle(color: Colors.white)),
-                            Text('توضیحات: ${_infoList[index]['explanation']}', style: TextStyle(color: Colors.white)),
-                          ],
-                        ),
+              child: ListView.builder(
+                itemCount: _infoList.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    child: ListTile(
+                      title: Text('عنوان: ${_infoList[index]['title']}'),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('مهلت: ${_infoList[index]['deadline']}'),
+                          Text('توضیحات: ${_infoList[index]['explanation']}'),
+                        ],
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
             ),
-            const SizedBox(height: 700,),
+
             Container(
               color: Colors.blueAccent,
               height: 83,
@@ -177,7 +168,7 @@ class _StudentPracticesPageEditionState
                             size: 30,
                           )),
                       const SizedBox(
-                        width: 20,
+                        width: 15,
                         height: 0,
                       ),
                       IconButton(
@@ -186,7 +177,7 @@ class _StudentPracticesPageEditionState
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      const StudentInfoPageEdit()));
+                                  const StudentInfoPageEdit()));
                         },
                         icon: const Icon(
                           Icons.account_circle,
@@ -195,7 +186,7 @@ class _StudentPracticesPageEditionState
                         ),
                       ),
                       const SizedBox(
-                        width: 20,
+                        width: 15,
                       ),
                       IconButton(
                           onPressed: () {
@@ -211,7 +202,7 @@ class _StudentPracticesPageEditionState
                             size: 30,
                           )),
                       const SizedBox(
-                        width: 20,
+                        width: 15,
                       ),
                       IconButton(
                         onPressed: () {
@@ -219,7 +210,7 @@ class _StudentPracticesPageEditionState
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      const StudentClassPageEdit()));
+                                  const StudentClassPageEdit()));
                         },
                         icon: const Icon(
                           Icons.add_chart_rounded,
@@ -228,7 +219,7 @@ class _StudentPracticesPageEditionState
                         ),
                       ),
                       const SizedBox(
-                        width: 20,
+                        width: 15,
                       ),
                       IconButton(
                           onPressed: () {
@@ -244,7 +235,7 @@ class _StudentPracticesPageEditionState
                             size: 30,
                           )),
                       const SizedBox(
-                        width: 20,
+                        width: 15,
                       ),
                       IconButton(
                           onPressed: () {},
@@ -263,7 +254,7 @@ class _StudentPracticesPageEditionState
                       Text('سرا',
                           style: TextStyle(color: Colors.black, fontSize: 18)),
                       SizedBox(
-                        width: 40,
+                        width: 33,
                       ),
                       Text('حسابا',
                           style: TextStyle(color: Colors.black, fontSize: 18)),
@@ -273,17 +264,17 @@ class _StudentPracticesPageEditionState
                       Text('کارا',
                           style: TextStyle(color: Colors.black, fontSize: 18)),
                       SizedBox(
-                        width: 40,
+                        width: 35,
                       ),
                       Text('کلاسا',
                           style: TextStyle(color: Colors.black, fontSize: 18)),
                       SizedBox(
-                        width: 40,
+                        width: 35,
                       ),
                       Text('خبرا',
                           style: TextStyle(color: Colors.black, fontSize: 18)),
                       SizedBox(
-                        width: 40,
+                        width: 26,
                       ),
                       Text('تمرینا',
                           style: TextStyle(color: Colors.white, fontSize: 18)),
@@ -296,5 +287,20 @@ class _StudentPracticesPageEditionState
         ),
       ),
     );
+  }
+
+  send(String title,String deadline ,String description)async{
+    String request = "practice/$title/$deadline/$description\u0000";
+    await Socket.connect("10.0.2.2", 8000).then((serverSocket) {
+
+      serverSocket.write(request);
+      serverSocket.flush();
+      serverSocket.listen((response) {
+        print(String.fromCharCodes(response));
+        setState(() {
+          _log += "${String.fromCharCodes(response)}\n";
+        });
+      });
+    });
   }
 }

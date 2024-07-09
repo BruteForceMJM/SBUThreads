@@ -2,472 +2,335 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
-import 'package:login_signup_page/FirstPage/second_edition_student_classes_page.dart';
-import 'package:login_signup_page/FirstPage/second_edition_student_home_page.dart';
-import 'package:login_signup_page/FirstPage/second_edition_student_info_page.dart';
-import 'package:login_signup_page/FirstPage/second_edition_student_news_page.dart';
-import 'package:login_signup_page/FirstPage/second_edition_student_practices_page.dart';
-import 'package:login_signup_page/FirstPage/student_news_page.dart';
-import 'package:login_signup_page/alpha/a.dart';
-import 'package:shamsi_date/shamsi_date.dart';
 
-import 'Pallete.dart';
+import '../FirstPage/Pallete.dart';
+import '../FirstPage/second_edition_student_classes_page.dart';
+import '../FirstPage/second_edition_student_home_page.dart';
+import '../FirstPage/second_edition_student_info_page.dart';
+import '../FirstPage/second_edition_student_news_page.dart';
+import '../FirstPage/second_edition_student_practices_page.dart';
+import '../FirstPage/second_edition_student_work_space.dart';
 
-void main(){
-  runApp(const Gama());
+void main() {
+  runApp(MyApp());
 }
-class Gama extends StatelessWidget{
-  const Gama({super.key});
 
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      color: Pallete.backgroundColor,
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
-      supportedLocales: [
-        Locale('fa', 'IR'),
-      ],
-      home: StudentWorkPageEdit(),
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const StudentWorkPageEdit(),
     );
   }
-
 }
+
 class StudentWorkPageEdit extends StatefulWidget {
   const StudentWorkPageEdit({super.key});
 
-
   @override
-  State<StudentWorkPageEdit> createState() => _StudentWorkPageEditState();
+  _StudentWorkPageEditState createState() => _StudentWorkPageEditState();
 }
 
 class _StudentWorkPageEditState extends State<StudentWorkPageEdit> {
-  Jalali? _selectedJalaliDate;
-  TimeOfDay? _selectedTime;
-  final TextEditingController _controller =TextEditingController(text: "");
-  String _log="";
-  String _dayLog="";
-  String _hourLog="";
-
-  List<String> _userTasks =[];
-  void openInfoDialog() async{
-    final taskResult = await showDialog<String>(
+  final List<Map<String, String>> _infoList = [];
+  String _log="" ;
+  final _titleController = TextEditingController();
+  final _deadlineDateController = TextEditingController();
+  final _deadlineHourController = TextEditingController();
+  final _explanationController = TextEditingController();
+  void _openDialog() {
+    showDialog(
       context: context,
-      builder: (BuildContext context){
-        return StatefulBuilder(
-          builder: (context, setState){
-            return AlertDialog(
-              title: const Text('کار جدید'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      hintText: 'کار جدید را وارد کنید',
-                      contentPadding: EdgeInsets.all(20),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Pallete.borderColor,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Pallete.gradient1,
-                          width: 4,
-                        ),
-                      ),
-                    ),
-                    controller: _controller,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('جزئیات تمرین'),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                TextField(
+                  controller: _titleController,
+                  decoration: InputDecoration(
+                    labelText: 'عنوان',
+                    border: OutlineInputBorder(),
                   ),
-                  Text(
-                      _log
-                  ),
-                  ListTile(
-                    title: const Text("انتخاب روز ددلاین"),
-                    subtitle: Text(_selectedJalaliDate != null
-                        ? _selectedJalaliDate!.formatCompactDate()
-                        : 'Not Set'),
-                    trailing: const Icon(Icons.calendar_today),
-                    onTap: () async {
-                      Jalali? pickedDate = await showPersianDatePicker(
-                        context: context,
-                        initialDate: _selectedJalaliDate ?? Jalali.now(),
-                        firstDate: Jalali(1400, 1, 1),
-                        lastDate: Jalali(1450, 12, 29),
-                      );
-
-                      if (pickedDate != null) {
-                        setState(() {
-                          _selectedJalaliDate = pickedDate;
-                        });
-                      }
-                    },
-                  ),
-
-                  ListTile(
-                    title: const Text("انتخاب زمان ددلاین"),
-                    subtitle: Text(_selectedTime != null
-                        ? _selectedTime!.format(context)
-                        : 'Not Set'),
-                    trailing: const Icon(Icons.access_time),
-                    onTap: () async {
-                      TimeOfDay? pickedTime = await showTimePicker(
-                        context: context,
-                        initialTime: _selectedTime ?? TimeOfDay.now(),
-                      );
-                      if (pickedTime != null) {
-                        setState(() {
-                          _selectedTime = pickedTime;
-                        });
-                      }
-                    },
-                  ),
-                  if (_selectedJalaliDate != null && _selectedTime != null)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 16.0),
-                      child: Text(
-                        'ددلاین: ${_selectedJalaliDate!.formatCompactDate()} ${_selectedTime!.format(context)}',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                ],
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('بازگشت'),
                 ),
-                TextButton(
-                  onPressed: () {
-                    print("lenght :: $_userTasks.length");
-                    setState(() {
-                      send(_controller.text,_selectedJalaliDate.toString(),_selectedTime.toString());
-                    });
-                    Navigator.of(context).pop();
+                SizedBox(height: 8),
+                TextField(
+                  controller: _deadlineDateController,
+                  decoration: InputDecoration(
+                    labelText: 'تاریخ مهلت',
+                    border: OutlineInputBorder(),
+                  ),
+                  onTap: () async {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                    DateTime? pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime(2101),
+                    );
+                    if (pickedDate != null) {
+                      String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+                      _deadlineDateController.text = formattedDate;
+                    }
                   },
-                  child: const Text('ذخیره'),
+
+                ),
+                SizedBox(height: 8),
+                TextField(
+                  controller: _deadlineHourController,
+                  decoration: InputDecoration(
+                    labelText: 'ساعت مهلت',
+                    border: OutlineInputBorder(),
+                  ),
+                  onTap: () async {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                    TimeOfDay? pickedTime = await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.now(),
+                    );
+                    if (pickedTime != null) {
+                      _deadlineHourController.text = pickedTime.format(context);
+                    }
+                  },
+                ),
+                SizedBox(height: 8),
+                TextField(
+                  controller: _explanationController,
+                  decoration: InputDecoration(
+                    labelText: 'توضیحات',
+                    border: OutlineInputBorder(),
+                  ),
+                  maxLines: 3,
                 ),
               ],
-            );
-          },
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('ذخیره'),
+              onPressed: () {
+                setState(() {
+                  _infoList.add({
+                    'title': _titleController.text,
+                    'deadlineDate': _deadlineDateController.text,
+                    'deadlineHour': _deadlineHourController.text,
+                    'explanation': _explanationController.text,
+                  });
+                  send(_titleController.text, _deadlineDateController.text, _deadlineHourController.text, _explanationController.text);
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
         );
-      }
+      },
     );
-    print("Task Result :: $taskResult");
-    _userTasks.add(taskResult!);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Pallete.backgroundColor,
-      body: Container(
-        color: Pallete.backgroundColor,
-        child: Column(
-          children: [
-            Expanded(
-              child: Container(
-                color: Pallete.backgroundColor,
-              ),
-            ),
-
-            const Row(
-              children: [
-                SizedBox(width: 20,),
-                Text(
-                  'کارا',
-                  style: TextStyle(
-                      fontSize: 35,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                ),
-              ],
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: _userTasks.length,
-                itemBuilder: (context, index){
-                  return Card(
-                    margin: const EdgeInsets.all(10),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Text(
-                        _userTasks[index++],
-                        style: const TextStyle(fontSize: 18),
-                      ),
+      appBar: AppBar(
+        backgroundColor: Pallete.backgroundColor,
+        title: const Center(
+          child: Text('کارها', style: TextStyle(
+              color: Colors.white,
+              fontSize: 30,
+              fontWeight: FontWeight.bold
+          ),),
+        ),
+      ),
+      body: Column(
+        children: [
+          SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: _openDialog,
+            child: Text('افزودن تمرین'),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: _infoList.length,
+              itemBuilder: (context, index) {
+                return Card(
+                  color: Colors.blue,
+                  shadowColor: Colors.white,
+                  child: ListTile(
+                    title: Text('عنوان: ${_infoList[index]['title']}',
+                        style: TextStyle(color: Colors.white)),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('تاریخ مهلت: ${_infoList[index]['deadlineDate']}',
+                            style: TextStyle(color: Colors.white)),
+                        Text('ساعت مهلت: ${_infoList[index]['deadlineHour']}',
+                            style: TextStyle(color: Colors.white)),
+                        Text('توضیحات: ${_infoList[index]['explanation']}',
+                            style: TextStyle(color: Colors.white)),
+                      ],
                     ),
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
-            const SizedBox(height: 550,),
-            Row(
+          ),
+          Container(
+            color: Colors.blueAccent,
+            height: 83,
+            child: Column(
               children: [
-                const SizedBox(width: 10,),
-                IconButton(
-                  onPressed: ()=>openInfoDialog(),
-                  icon: const Icon(Icons.calendar_month,color: Colors.white,size: 40,),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20,),
-
-            Container(
-              color: Colors.blueAccent,
-              height: 83,
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      const SizedBox(
-                        height: 20,
-                        width: 20,
-                      ),
-                      IconButton(
-                          onPressed: () {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                    const StudentHomePageEdit()));
-                          },
-                          icon: const Icon(
-                            CupertinoIcons.house_fill,
-                            color: Colors.black,
-                            size: 30,
-                          )),
-                      const SizedBox(
-                        width: 20,
-                        height: 0,
-                      ),
-                      IconButton(
-                        onPressed: (){
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const StudentInfoPageEdit()));
-                        },
-                        icon: const Icon(
-                          Icons.account_circle,
-                          color: Colors.black,
-                          size: 30,
-                        ),
-                      ),
-                      const SizedBox(width: 20,),
-                      IconButton(
-                          onPressed: () {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                    const StudentWorkPageEdit()));
-                          },
-                          icon: const Icon(
-                            Icons.task_rounded,
-                            color: Colors.white,
-                            size: 30,
-                          )),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      IconButton(
+                Row(
+                  children: [
+                    const SizedBox(
+                      height: 20,
+                      width: 20,
+                    ),
+                    IconButton(
                         onPressed: () {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      StudentClassPageEdit()));
+                                  const StudentHomePageEdit()));
                         },
                         icon: const Icon(
-                          Icons.add_chart_rounded,
+                          CupertinoIcons.house_fill,
                           color: Colors.black,
                           size: 30,
-                        ),
+                        )),
+                    const SizedBox(
+                      width: 20,
+                      height: 0,
+                    ),
+                    IconButton(
+                      onPressed: (){
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                const StudentInfoPageEdit()));
+                      },
+                      icon: const Icon(
+                        Icons.account_circle,
+                        color: Colors.black,
+                        size: 30,
                       ),
-                      const SizedBox(
-                        width: 20,
+                    ),
+                    const SizedBox(width: 20,),
+                    IconButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                  const StudentWorkPageEdit()));
+                        },
+                        icon: const Icon(
+                          Icons.task_rounded,
+                          color: Colors.white,
+                          size: 30,
+                        )),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                const StudentClassPageEdit()));
+                      },
+                      icon: const Icon(
+                        Icons.add_chart_rounded,
+                        color: Colors.black,
+                        size: 30,
                       ),
-                      IconButton(
-                          onPressed: () {
-                            Navigator.pushReplacement(context,
-                                MaterialPageRoute(builder: (context)=> const StudentNewsPageSection2())
-                            );
-                          },
-                          icon: const Icon(
-                            CupertinoIcons.news_solid,
-                            color: Colors.black,
-                            size: 30,
-                          )),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      IconButton(
-                          onPressed: () {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const StudentPracticesPageEdition()));
-                          },
-                          icon: const Icon(
-                            Icons.add_business,
-                            color: Colors.black,
-                            size: 30,
-                          ))
-                    ],
-                  ),
-                  const Row(
-                    children: [
-                      SizedBox(
-                        width: 33,
-                      ),
-                      Text('سرا',
-                          style: TextStyle(color: Colors.black, fontSize: 18)),
-                      SizedBox(
-                        width: 40,
-                      ),
-                      Text('حسابا',
-                          style: TextStyle(color: Colors.black, fontSize: 18)),
-                      SizedBox(
-                        width: 30,
-                      ),
-                      Text('کارا',
-                          style: TextStyle(color: Colors.white, fontSize: 18)),
-                      SizedBox(
-                        width: 40,
-                      ),
-                      Text('کلاسا',
-                          style: TextStyle(color: Colors.black, fontSize: 18)),
-                      SizedBox(
-                        width: 40,
-                      ),
-                      Text('خبرا',
-                          style: TextStyle(color: Colors.black, fontSize: 18)),
-                      SizedBox(
-                        width: 40,
-                      ),
-                      Text('تمرینا',
-                          style: TextStyle(color: Colors.black, fontSize: 18)),
-                    ],
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    IconButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(context,
+                              MaterialPageRoute(builder: (context)=> const StudentNewsPageSection2())
+                          );
+                        },
+                        icon: const Icon(
+                          CupertinoIcons.news_solid,
+                          color: Colors.black,
+                          size: 30,
+                        )),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    IconButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                  const StudentPracticesPageEdition()));
+                        },
+                        icon: const Icon(
+                          Icons.add_business,
+                          color: Colors.black,
+                          size: 30,
+                        ))
+                  ],
+                ),
+                const Row(
+                  children: [
+                    SizedBox(
+                      width: 33,
+                    ),
+                    Text('سرا',
+                        style: TextStyle(color: Colors.black, fontSize: 18)),
+                    SizedBox(
+                      width: 40,
+                    ),
+                    Text('حسابا',
+                        style: TextStyle(color: Colors.black, fontSize: 18)),
+                    SizedBox(
+                      width: 30,
+                    ),
+                    Text('کارا',
+                        style: TextStyle(color: Colors.white, fontSize: 18)),
+                    SizedBox(
+                      width: 40,
+                    ),
+                    Text('کلاسا',
+                        style: TextStyle(color: Colors.black, fontSize: 18)),
+                    SizedBox(
+                      width: 40,
+                    ),
+                    Text('خبرا',
+                        style: TextStyle(color: Colors.black, fontSize: 18)),
+                    SizedBox(
+                      width: 40,
+                    ),
+                    Text('تمرینا',
+                        style: TextStyle(color: Colors.black, fontSize: 18)),
+                  ],
+                )
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
 
-  void _showDeadlineAlertDialog(BuildContext context){
-    showDialog(context: context,
-        builder: (context){
-          return StatefulBuilder(
-            builder: (context, setState){
-              return AlertDialog(
-                title: const Text('کار جدید'),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        hintText: 'کار جدید را وارد کنید',
-                        contentPadding: EdgeInsets.all(20),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Pallete.borderColor,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Pallete.gradient1,
-                            width: 4,
-                          ),
-                        ),
-                      ),
-                      controller: _controller,
-                    ),
-                    Text(
-                        _log
-                    ),
-                    ListTile(
-                      title: const Text("انتخاب روز ددلاین"),
-                      subtitle: Text(_selectedJalaliDate != null
-                          ? _selectedJalaliDate!.formatCompactDate()
-                          : 'Not Set'),
-                      trailing: const Icon(Icons.calendar_today),
-                      onTap: () async {
-                        Jalali? pickedDate = await showPersianDatePicker(
-                          context: context,
-                          initialDate: _selectedJalaliDate ?? Jalali.now(),
-                          firstDate: Jalali(1400, 1, 1),
-                          lastDate: Jalali(1450, 12, 29),
-                        );
-
-                        if (pickedDate != null) {
-                          setState(() {
-                            _selectedJalaliDate = pickedDate;
-                          });
-                        }
-                      },
-                    ),
-
-                    ListTile(
-                      title: const Text("انتخاب زمان ددلاین"),
-                      subtitle: Text(_selectedTime != null
-                          ? _selectedTime!.format(context)
-                          : 'Not Set'),
-                      trailing: const Icon(Icons.access_time),
-                      onTap: () async {
-                        TimeOfDay? pickedTime = await showTimePicker(
-                          context: context,
-                          initialTime: _selectedTime ?? TimeOfDay.now(),
-                        );
-                        if (pickedTime != null) {
-                          setState(() {
-                            _selectedTime = pickedTime;
-                          });
-                        }
-                      },
-                    ),
-                    if (_selectedJalaliDate != null && _selectedTime != null)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16.0),
-                        child: Text(
-                          'ددلاین: ${_selectedJalaliDate!.formatCompactDate()} ${_selectedTime!.format(context)}',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                  ],
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('بازگشت'),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      setState(() {
-                        send(_controller.text,_selectedJalaliDate.toString(),_selectedTime.toString());
-                      });
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('ذخیره'),
-                  ),
-                ],
-              );
-            },
-          );
-        }
-    );
-  }
-  send(String userText, String userDay,String userHour) async{
-    String request = "$userText-$userDay-$userHour\u0000";
+  send(String title,String date, String hour ,String description)async{
+    String request = "work/$title/$date/$hour/$description\u0000";
     await Socket.connect("10.0.2.2", 8000).then((serverSocket) {
 
       serverSocket.write(request);
@@ -479,33 +342,5 @@ class _StudentWorkPageEditState extends State<StudentWorkPageEdit> {
         });
       });
     });
-
-  }
-}
-
-Future<Jalali?> showPersianDatePicker({
-  required BuildContext context,
-  required Jalali initialDate,
-  required Jalali firstDate,
-  required Jalali lastDate,
-}) async {
-  DateTime? picked = await showDatePicker(
-    context: context,
-    initialDate: initialDate.toDateTime(),
-    firstDate: firstDate.toDateTime(),
-    lastDate: lastDate.toDateTime(),
-  );
-
-  return picked != null ? Jalali.fromDateTime(picked) : null;
-}
-
-extension JalaliFormatter on Jalali {
-  String formatCompactDate() {
-    final f = farsiNumberFormat();
-    return '${f.format(year)}/${f.format(month)}/${f.format(day)}';
-  }
-
-  NumberFormat farsiNumberFormat() {
-    return NumberFormat('##', 'fa');
   }
 }

@@ -328,7 +328,7 @@ class _UserInputClassesInfo extends State<UserInputClassesInfo> {
   }
 
   send(String information) async{
-    String request = "$information\u0000";
+    String request = "class/$information\u0000";
     await Socket.connect("10.0.2.2", 8000).then((serverSocket) {
 
       serverSocket.write(request);
