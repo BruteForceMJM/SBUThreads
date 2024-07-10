@@ -2,6 +2,7 @@ package Cli.src;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.Console;
 import java.io.File;
 import java.io.IOException;
@@ -10,8 +11,10 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.regex.Pattern;
+
 public class Cli {
-    private static final Cli.src.Admin admin = new Cli.src.Admin("admin", "admin", "admin");
+
+    private static final Admin admin = new Admin("admin", "admin", "admin");
     private static final Console console = System.console();
     private static final ObjectMapper mapper = new ObjectMapper();
 
@@ -28,10 +31,10 @@ public class Cli {
             try {
                 userChosenNumber = Integer.parseInt(choice);
                 if (userChosenNumber < 1 || userChosenNumber > 3) {
-                    throw new Cli.src.illegalNumberException();
+                    throw new illegalNumberException();
                 }
                 validNumber = true;
-            } catch (Cli.src.illegalNumberException e) {
+            } catch (illegalNumberException e) {
                 choice = console.readLine("Enter a Valid Choice");
             }
         }

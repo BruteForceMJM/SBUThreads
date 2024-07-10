@@ -25,6 +25,11 @@ public class Student extends Person {
         super(ID);
     }
 
+    public Student(String ID, String password) {
+        super(ID);
+        this.setPassword(password);
+    }
+
     public Student(String ID, String password, String firstName, String lastName) {
         super(ID, password, firstName, lastName);
     }
