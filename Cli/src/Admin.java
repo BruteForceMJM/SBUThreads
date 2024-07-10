@@ -49,8 +49,8 @@ public class Admin {
                 }
             }
         }
-        mapper.writerWithDefaultPrettyPrinter().writeValue(studentsFile, students);
         mapper.writerWithDefaultPrettyPrinter().writeValue(coursesFile, courses);
+        mapper.writerWithDefaultPrettyPrinter().writeValue(studentsFile, students);
     }
 
     public void removeStudent(String courseID, String studentID) throws Exception {

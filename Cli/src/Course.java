@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 class StudentData {
     private final HashMap<Task, Double> tasksScores = new HashMap<>();
+    private String studentID;
     private Student student;
     private double score;
 
@@ -17,10 +18,11 @@ class StudentData {
     public StudentData(Student student, double score) {
         this.student = student;
         this.score = score;
+        this.studentID = student.getID();
     }
 
     public StudentData(Student student) {
-        this.student = student;
+        this(student, 0);
     }
 
     public HashMap<Task, Double> getTasksScores() {
@@ -39,8 +41,12 @@ class StudentData {
         tasksScores.put(task, score);
     }
 
-    public Student getStudent() {
+    public Student returnStudent() {
         return student;
+    }
+
+    public String getStudentID() {
+        return studentID;
     }
 
     public double getScore() {
@@ -56,17 +62,18 @@ class StudentData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         StudentData that = (StudentData) o;
-        return Objects.equals(student, that.student);
+        return Objects.equals(studentID, that.getStudentID());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(student);
+        return Objects.hash(studentID);
     }
 }
 
 public class Course {
     private final HashSet<StudentData> studentsData = new HashSet<>();
+    private final HashSet<String> studentsID = new HashSet<>();
     private final LinkedList<Task> tasks = new LinkedList<>();
     private String id;
     private Semester semester;
@@ -139,16 +146,14 @@ public class Course {
         this.examDate = examDate;
     }
 
-    public Map<Student, Double> getStudentsGrades() throws StudentDoesNotExistException {
+    public Map<Student, Double> returnStudentsGrades() throws StudentDoesNotExistException {
         return studentsData.stream()
                 .collect(Collectors
-                        .toMap(StudentData::getStudent, StudentData::getScore));
+                        .toMap(StudentData::returnStudent, StudentData::getScore));
     }
 
-    public List<Student> getStudents() throws StudentDoesNotExistException {
-        return studentsData.stream()
-                .map(StudentData::getStudent)
-                .collect(Collectors.toList());
+    public Set<String> getStudentsID() throws StudentDoesNotExistException {
+        return studentsID;
     }
 
     public void addStudent(Student student) throws Exception {
@@ -158,6 +163,7 @@ public class Course {
         }
         student.addCurrentCourse(this);
         studentsData.add(newStudent);
+        studentsID.add(student.getID());
     }
 
     public void removeStudent(Student student) throws StudentDoesNotExistException, CourseNotFoundException {

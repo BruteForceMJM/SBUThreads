@@ -471,6 +471,9 @@ public class Cli {
         System.out.println("2-Remove Task");
         System.out.println("3-Score student");
         System.out.println("4-Score Task");
+        System.out.println("5-Show Course");
+        System.out.println("6-Change Information");
+        System.out.println("7-Adjust Deadline");
         int userNumber = Integer.parseInt(console.readLine("What Action do You Want to Do: "));
         boolean validNumber = false;
         while (!validNumber) {
