@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:login_signup_page/FirstPage/second_edition_student_home_page.dart';
+import 'package:login_signup_page/FirstPage/student_home_page.dart';
 import 'package:login_signup_page/FirstPage/student_page.dart';
 import 'package:login_signup_page/FirstPage/tacher_page.dart';
 
@@ -51,13 +53,18 @@ class _SignupPageState extends State<SiignupPage>{
 
   void _signup() {
     send(_controllerUsername.text, _controllerPassword.text);
-    if (_formKey.currentState!.validate()) {
-      if (_role == 'student') {
-        Navigator.push(context, MaterialPageRoute(builder: (context) =>const StudentPage()));
-      } else if (_role == 'teacher') {
-        Navigator.push(context,MaterialPageRoute(builder: (context) => TeacherPage()));
+    if(_log == 'error'){
+      const Text('Error');
+    }else{
+      if (_formKey.currentState!.validate()) {
+        if (_role == 'student') {
+          Navigator.push(context, MaterialPageRoute(builder: (context) =>const StudentHomePageEdit()));
+        } else if (_role == 'teacher') {
+          Navigator.push(context,MaterialPageRoute(builder: (context) => TeacherPage()));
+        }
       }
     }
+
   }
 
   @override
@@ -295,7 +302,7 @@ class _SignupPageState extends State<SiignupPage>{
   }
 
   send(String userName,String password) async{
-    String request = "$userName-$password\u0000";
+    String request = "signup/$userName/$password\u0000";
     await Socket.connect("10.0.2.2", 8000).then((serverSocket){
       serverSocket.write(request);
       serverSocket.flush();

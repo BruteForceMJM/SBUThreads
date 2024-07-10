@@ -38,10 +38,12 @@ class StudentPracticesPageEdition extends StatefulWidget {
 
 class _StudentPracticesPageEditionState extends State<StudentPracticesPageEdition> {
   final List<Map<String, String>> _infoList = [];
-  String _log ="" ;
+  String _log = "";
+  final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _deadlineController = TextEditingController();
   final _explanationController = TextEditingController();
+
   void _openDialog() {
     showDialog(
       context: context,
@@ -49,52 +51,75 @@ class _StudentPracticesPageEditionState extends State<StudentPracticesPageEditio
         return AlertDialog(
           title: Text('جزئیات تمرین'),
           content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Row(
-                  children: [
-                    Text('عنوان: '),
-                    Expanded(
-                      child: TextFormField(
-                        controller: _titleController,
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Row(
+                    children: [
+                      Text('عنوان: '),
+                      Expanded(
+                        child: TextFormField(
+                          controller: _titleController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'لطفاً عنوان را وارد کنید';
+                            }
+                            return null;
+                          },
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 8),
-                Row(
-                  children: [
-                    Text('مهلت: '),
-                    Expanded(
-                      child: TextField(
-                        controller: _deadlineController,
+                    ],
+                  ),
+                  SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Text('مهلت: '),
+                      Expanded(
+                        child: TextFormField(
+                          controller: _deadlineController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'لطفاً مهلت را وارد کنید';
+                            }
+                            return null;
+                          },
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 8),
-                Text('توضیحات: '),
-                TextFormField(
-                  controller: _explanationController,
-                  maxLines: 3,
-                ),
-              ],
+                    ],
+                  ),
+                  SizedBox(height: 8),
+                  Text('توضیحات: '),
+                  TextFormField(
+                    controller: _explanationController,
+                    maxLines: 3,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'لطفاً توضیحات را وارد کنید';
+                      }
+                      return null;
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
           actions: <Widget>[
             TextButton(
               child: Text('ذخیره'),
               onPressed: () {
-                setState(() {
-                  _infoList.add({
-                    'title': _titleController.text,
-                    'deadline': _deadlineController.text,
-                    'explanation': _explanationController.text,
+                if (_formKey.currentState!.validate()) {
+                  setState(() {
+                    _infoList.add({
+                      'title': _titleController.text,
+                      'deadline': _deadlineController.text,
+                      'explanation': _explanationController.text,
+                    });
                   });
-                });
-                send(_titleController.text, _deadlineController.text, _explanationController.text);
-                Navigator.of(context).pop();
+                  send(_titleController.text, _deadlineController.text, _explanationController.text);
+                  Navigator.of(context).pop();
+                }
               },
             ),
           ],
@@ -109,11 +134,9 @@ class _StudentPracticesPageEditionState extends State<StudentPracticesPageEditio
       backgroundColor: Pallete.backgroundColor,
       appBar: AppBar(
         backgroundColor: Pallete.backgroundColor,
-        title: const Center(child: Text('تمرینات',style: TextStyle(
-          color: Colors.white,
-          fontSize: 30,
-          fontWeight: FontWeight.bold
-        ),)),
+        title: const Center(
+          child: Text('تمرینات', style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold)),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -137,12 +160,20 @@ class _StudentPracticesPageEditionState extends State<StudentPracticesPageEditio
                           Text('توضیحات: ${_infoList[index]['explanation']}'),
                         ],
                       ),
+                      trailing: IconButton(
+                        icon: Icon(Icons.check_circle, color: Colors.green),
+                        onPressed: () {
+                          // Action for the tick icon button
+                          setState(() {
+                            _infoList.removeAt(index);
+                          });
+                        },
+                      ),
                     ),
                   );
                 },
               ),
             ),
-
             Container(
               color: Colors.blueAccent,
               height: 83,
@@ -159,8 +190,7 @@ class _StudentPracticesPageEditionState extends State<StudentPracticesPageEditio
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                    const StudentHomePageEdit()));
+                                    builder: (context) => const StudentHomePageEdit()));
                           },
                           icon: const Icon(
                             CupertinoIcons.house_fill,
@@ -176,8 +206,7 @@ class _StudentPracticesPageEditionState extends State<StudentPracticesPageEditio
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                  const StudentInfoPageEdit()));
+                                  builder: (context) => const StudentInfoPageEdit()));
                         },
                         icon: const Icon(
                           Icons.account_circle,
@@ -193,8 +222,7 @@ class _StudentPracticesPageEditionState extends State<StudentPracticesPageEditio
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                    const StudentWorkPageEdit()));
+                                    builder: (context) => const StudentWorkPageEdit()));
                           },
                           icon: const Icon(
                             Icons.task_rounded,
@@ -209,8 +237,7 @@ class _StudentPracticesPageEditionState extends State<StudentPracticesPageEditio
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                  const StudentClassPageEdit()));
+                                  builder: (context) => const StudentClassPageEdit()));
                         },
                         icon: const Icon(
                           Icons.add_chart_rounded,
@@ -226,8 +253,7 @@ class _StudentPracticesPageEditionState extends State<StudentPracticesPageEditio
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                    const StudentNewsPageSection2()));
+                                    builder: (context) => const StudentNewsPageSection2()));
                           },
                           icon: const Icon(
                             CupertinoIcons.news_solid,
@@ -251,33 +277,27 @@ class _StudentPracticesPageEditionState extends State<StudentPracticesPageEditio
                       SizedBox(
                         width: 33,
                       ),
-                      Text('سرا',
-                          style: TextStyle(color: Colors.black, fontSize: 18)),
+                      Text('سرا', style: TextStyle(color: Colors.black, fontSize: 18)),
                       SizedBox(
                         width: 33,
                       ),
-                      Text('حسابا',
-                          style: TextStyle(color: Colors.black, fontSize: 18)),
+                      Text('حسابا', style: TextStyle(color: Colors.black, fontSize: 18)),
                       SizedBox(
                         width: 30,
                       ),
-                      Text('کارا',
-                          style: TextStyle(color: Colors.black, fontSize: 18)),
+                      Text('کارا', style: TextStyle(color: Colors.black, fontSize: 18)),
                       SizedBox(
                         width: 35,
                       ),
-                      Text('کلاسا',
-                          style: TextStyle(color: Colors.black, fontSize: 18)),
+                      Text('کلاسا', style: TextStyle(color: Colors.black, fontSize: 18)),
                       SizedBox(
                         width: 35,
                       ),
-                      Text('خبرا',
-                          style: TextStyle(color: Colors.black, fontSize: 18)),
+                      Text('خبرا', style: TextStyle(color: Colors.black, fontSize: 18)),
                       SizedBox(
                         width: 26,
                       ),
-                      Text('تمرینا',
-                          style: TextStyle(color: Colors.white, fontSize: 18)),
+                      Text('تمرینا', style: TextStyle(color: Colors.white, fontSize: 18)),
                     ],
                   )
                 ],
@@ -289,10 +309,9 @@ class _StudentPracticesPageEditionState extends State<StudentPracticesPageEditio
     );
   }
 
-  send(String title,String deadline ,String description)async{
+  send(String title, String deadline, String description) async {
     String request = "practice/$title/$deadline/$description\u0000";
     await Socket.connect("10.0.2.2", 8000).then((serverSocket) {
-
       serverSocket.write(request);
       serverSocket.flush();
       serverSocket.listen((response) {

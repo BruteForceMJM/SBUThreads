@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:login_signup_page/FirstPage/second_edition_student_home_page.dart';
 import 'package:login_signup_page/FirstPage/student_classes_page.dart';
 import 'package:login_signup_page/FirstPage/student_home_page.dart';
 import 'package:login_signup_page/FirstPage/student_news_page.dart';
@@ -61,25 +62,28 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _login() {
-    send(_controllerUsername.text, _controllerPassword.text);
-    if (_formKey.currentState != null) {
-      if (_formKey.currentState!.validate()) {
-        if (_username == 'admin' && _password == 'admin') {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const AdminPage()));
-        } else if (RegExp(r'^\d{9}$').hasMatch(_username)) {
-          if (_role == 'student') {
+    if(_log!="error"){
+      if (_formKey.currentState != null) {
+        if (_formKey.currentState!.validate()) {
+          if (_username == 'admin' && _password == 'admin') {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const StudentPage()));
-          } else if (_role == 'teacher') {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => TeacherPage()));
-          }
-          /*Navigator.pushNamed(
+                MaterialPageRoute(builder: (context) => const AdminPage()));
+          } else if (RegExp(r'^\d{9}$').hasMatch(_username)) {
+            if (_role == 'student') {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const StudentHomePageEdit()));
+            } else if (_role == 'teacher') {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => TeacherPage()));
+            }
+            /*Navigator.pushNamed(
               context, _role == 'student' ? '/student' : '/teacher');*/
+          }
         }
       }
+      send(_controllerUsername.text, _controllerPassword.text);
     }
+
   }
 
   @override
@@ -320,7 +324,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   send(String userName, String password) async {
-    String request = "$userName-$password\u0000";
+    String request = "login/$userName/$password\u0000";
     await Socket.connect("10.0.2.2", 8000).then((serverSocket) {
       serverSocket.write(request);
       serverSocket.flush();
